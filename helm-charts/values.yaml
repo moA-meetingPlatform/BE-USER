@@ -5,7 +5,7 @@
 replicaCount: 2
 
 image:
-  repository: nginx
+  repository: awdfaf/be-user
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -44,20 +44,19 @@ service:
   port: 80
 
 ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  enabled: true
+  className: "nginx" # 사용하는 Ingress 클래스에 따라 여기 값을 설정할 수 있습니다.
+  annotations:
+    kubernetes.io/ingress.class: nginx
   hosts:
-    - host: chart-example.local
+    - host: backend.moa.com
       paths:
         - path: /
-          pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+          pathType: Prefix
+  # tls: 
+  #   - secretName: myapp-tls-secret
+  #     hosts:
+  #       - myapp.example.com
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
