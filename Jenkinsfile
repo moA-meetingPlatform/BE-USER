@@ -12,6 +12,8 @@ podTemplate(yaml: '''
               apiVersion: v1
               kind: Pod
               spec:
+                securityContext:
+                    fsGroup: 1000
                 volumes:
                 - name: docker-socket
                   emptyDir: {}
