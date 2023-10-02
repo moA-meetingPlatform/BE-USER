@@ -51,11 +51,12 @@ podTemplate(yaml: '''
 
         stage('Docker Build') {
 
-            dir(path: "${directoryPath}/container"){
+            dir(path: "${directoryPath}") {
                 container('docker') {
                     sh "docker buildx build --platform=linux/amd64 --build-arg COLOR=${imageTag} -t ${dockerHubRepo}:${imageTag} ./"
                 }
             }
+
 
         }
 
