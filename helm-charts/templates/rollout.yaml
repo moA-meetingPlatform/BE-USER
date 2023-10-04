@@ -55,6 +55,8 @@ spec:
           httpGet:
             path: /api/v1/user/test
             port: http
+          initialDelaySeconds: 150
+          periodSeconds: 30
         readinessProbe:
           tcpSocket:
             port: http
