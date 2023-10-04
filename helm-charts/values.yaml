@@ -49,7 +49,7 @@ service:
 ingress:
   enabled: true
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    # nginx.ingress.kubernetes.io/rewrite-target: /
   hosts:
     - host: backend.moa.com
       paths:
