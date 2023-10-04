@@ -48,8 +48,14 @@ service:
 
 ingress:
   enabled: true
-  annotations:
-    # nginx.ingress.kubernetes.io/rewrite-target: /
+  # 기본 백엔드 설정
+  defaultBackend:
+    service:
+      name: default-http-backend
+      namespace: kube-system
+      port:
+        number: 80
+  annotations: {}
   hosts:
     - host: backend.moa.com
       paths:
