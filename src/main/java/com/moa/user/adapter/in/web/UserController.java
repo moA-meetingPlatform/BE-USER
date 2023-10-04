@@ -1,5 +1,6 @@
 package com.moa.user.adapter.in.web;
 
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,11 +18,12 @@ import java.util.Map;
 
 
 @Tag(name = "User Controller", description = "유저 관련 API")
-		@RestController
+@RestController
 @RequestMapping("/api/v1/user")
 @Slf4j
 @RequiredArgsConstructor
 public class UserController {
+
 	@Operation(summary = "test", description = "test")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200", description = "OK",
@@ -31,7 +33,7 @@ public class UserController {
 		@ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
 	})
 	@GetMapping("/test")
-	public ResponseEntity<Map<?,?>> test() {
+	public ResponseEntity<Map<?, ?>> test() {
 		log.debug("this is user controller test");
 		Map<String, String> map = Map.of("message", "user test");
 		return ResponseEntity.ok(map);
