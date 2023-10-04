@@ -56,9 +56,10 @@ spec:
             path: /api/v1/user/test
             port: http
         readinessProbe:
-          httpGet:
-            path: /api/v1/user/test
+          tcpSocket:
             port: http
+          initialDelaySeconds: 150
+          periodSeconds: 30
         resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
