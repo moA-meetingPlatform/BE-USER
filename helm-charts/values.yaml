@@ -51,7 +51,6 @@ service:
 
 ingress:
   enabled: true
-  # 기본 백엔드 설정
   defaultBackend:
     service:
       name: be-user
@@ -59,12 +58,11 @@ ingress:
         number: 8000
   annotations:
     kubernetes.io/ingress.class: nginx
-    # nginx.ingress.kubernetes.io/rewrite-target: /
 
   hosts:
-    # - host: backend.moa.com
+    - host: 
       paths:
-        - path: /api/v1/user/
+        - path: /api/v1/user/test
           pathType: Prefix
   tls: []
   #   - secretName: myapp-tls-secret
