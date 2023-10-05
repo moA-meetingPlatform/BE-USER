@@ -46,6 +46,8 @@ service:
   type: NodePort
   port: 8000
   targetPort: 8000
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
 
 ingress:
   enabled: true
