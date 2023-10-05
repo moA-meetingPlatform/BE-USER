@@ -43,7 +43,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 8000
 
 ingress:
@@ -56,12 +56,13 @@ ingress:
       port:
         number: 80
   annotations: {}
+  kubernetes.io/ingress.class: nginx
   hosts:
     - host: backend.moa.com
       paths:
         - path: /api/v1/
           pathType: Prefix
-  # tls: 
+  tls: []
   #   - secretName: myapp-tls-secret
   #     hosts:
   #       - myapp.example.com
