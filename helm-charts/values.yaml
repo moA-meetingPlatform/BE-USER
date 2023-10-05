@@ -62,7 +62,7 @@ ingress:
     # nginx.ingress.kubernetes.io/rewrite-target: /
 
   hosts:
-    - host: backend.moa.com
+    # - host: backend.moa.com
       paths:
         - path: /api/v1/user/
           pathType: Prefix
