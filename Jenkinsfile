@@ -6,7 +6,7 @@ def directoryPath="/home/jenkins/agent/workspace/BE-USER"
 def githubEmail="awdfaf@kakao.com"
 def githubKey="github-key"
 def githubSSHURL="git@github.com:moA-meetingPlatform/BE-USER.git"
-def imageTag="dev-19"
+def imageTag="dev-20"
 
 podTemplate(yaml: '''
               apiVersion: v1
