@@ -43,7 +43,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
+  type: NordPort
   port: 8000
   targetPort: 8000
   annotations:
