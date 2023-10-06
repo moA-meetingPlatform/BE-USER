@@ -51,6 +51,7 @@ service:
 
 ingress:
   enabled: true
+  className: gce
   defaultBackend:
     service:
       name: be-user
