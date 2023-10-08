@@ -8,7 +8,7 @@ image:
   repository: awdfaf/be-user
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: dev-6
+  tag: dev-13
 
 container:
   port: 8000
@@ -43,32 +43,14 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: NordPort
+  type: NodePort
   port: 8000
   targetPort: 8000
   annotations:
     cloud.google.com/neg: '{"ingress": true}'
 
 ingress:
-  enabled: true
-  className: gce
-  defaultBackend:
-    service:
-      name: be-user
-      port:
-        number: 8000
-  annotations:
-    kubernetes.io/ingress.class: gce
-
-  hosts:
-    - host: 
-      paths:
-        - path: /api/v1/user/test
-          pathType: Prefix
-  tls: []
-  #   - secretName: myapp-tls-secret
-  #     hosts:
-  #       - myapp.example.com
+  enabled: false
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
