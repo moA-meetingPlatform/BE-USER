@@ -44,9 +44,8 @@ securityContext: {}
 
 service:
   type: NodePort
-  port: 8000
+  port: 30762
   targetPort: 8000
-  nodePort: 33000
   annotations:
     cloud.google.com/neg: '{"ingress": true}'
 
