@@ -43,10 +43,10 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 8000
   targetPort: 8000
-  nodePort: 32111
+  # nodePort: 32111
   # annotations:
   #   cloud.google.com/neg: '{"ingress": true}'
 
