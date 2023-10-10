@@ -16,14 +16,14 @@ spring:
         jdbc-url: jdbc:mysql://34.64.102.8:3306/moa_user
         read-only: false
         username: root
-        password: 1234
+        password: ${MASTER_DB_PASSWORD}
         driver-class-name: com.mysql.cj.jdbc.Driver
     slave:
       hikari:
         jdbc-url: jdbc:mysql://34.64.133.19:3306/moa_user
         read-only: true
         username: root
-        password: 1234
+        password: ${SLAVE_DB_PASSWORD}
         driver-class-name: com.mysql.cj.jdbc.Driver
 
 logging.level:

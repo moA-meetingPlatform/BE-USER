@@ -90,3 +90,15 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+env:
+  - name: MASTER_DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: db-passwords
+        key: master-db-password
+  - name: SLAVE_DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: db-passwords
+        key: slave-db-password
