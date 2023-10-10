@@ -51,6 +51,8 @@ spec:
         - name: http
           containerPort: {{ .Values.container.port }}
           protocol: TCP
+        env:
+          {{- toYaml .Values.env | nindent 12 }}
         livenessProbe:
           httpGet:
             path: /api/v1/user/test
