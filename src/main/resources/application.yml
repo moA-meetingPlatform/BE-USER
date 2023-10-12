@@ -3,9 +3,9 @@ server:
 
 spring:
   application:
-    name: SSGPOINT_APP
+    name: moa-meetingplatform
   profiles:
-    default: temp
+    default: local
   jpa:
     
     properties:
