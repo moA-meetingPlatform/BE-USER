@@ -1,7 +1,7 @@
 ---
 name: "\U0001F41B Bug Report"
 about: 버그를 발견했다면 이 템플릿을 사용해주세요.
-title: "[BUG]"
+title: "[BE_USER-BUG]"
 labels: bug
 assignees: Ahnyongju
 
