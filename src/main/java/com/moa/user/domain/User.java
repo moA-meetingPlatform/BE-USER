@@ -1,97 +1,61 @@
 package com.moa.user.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.moa.global.domain.BaseEntity;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
+@ToString
+@Entity
 @Getter
-@Setter
+@NoArgsConstructor // new User() 막는 용도
 @AllArgsConstructor
-public class User {
-
-
+public class User extends BaseEntity{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true, nullable = false, length = 100, name = "UUID")
     private UUID userUuid;
-
-    private String id;
-
+    @Column(length = 45, name = "login_id", unique = true)
+    private String loginId;
+    @Column(length = 100, name = "password")
     private String password;
-
-    private String name;
-
+    @Column(nullable = false, length = 100, name = "user_name")
+    private String userName;
+    @Column(nullable = false, length = 100, name = "birth_date")
     private LocalDateTime birthDate;
-
+    @Column(nullable = false, length = 25, name = "gender")
     private int gender;
-
+    @Column(nullable = false, length = 15, name = "phone_number")
     private String phoneNumber;
-
+    @Column(nullable = false, length = 100, name = "nick_name")
     private String nickname;
-
-    private int account_use;
-
+    @Column(nullable = false, length = 1, name = "status", columnDefinition = "int default 1")
+    private int status;
+    @Column(length = 100, name = "introduction")
     private String introduction;
-
+    @Column(length = 100, name = "profileImage_url")
     private String profileImage;
-
-    private LocalDateTime createdDatetime;
-
-    private LocalDateTime updatedDatetime;
-
+    @Column(name = "rating_count")
     private Integer ratingCount;
-
+    @Column(name = "manners_temperature")
     private Double mannersTemperature;
-
+    @Column(name = "warning_points")
     private Integer warningPoints;
-
+    @Column(name = "email_notifications")
     private Boolean emailNotifications;
-
+    @Column(name = "sms_notifications")
     private Boolean smsNotifications;
-
+    @Column(name = "push_notifications")
     private Boolean pushNotifications;
-
+    @Column(name = "device_token")
     private String deviceToken;
-
+    @Column(name = "employment_verification_date")
     private LocalDate employmentVerificationDate;
-
+    @Column(name = "employment_verified")
     private Boolean employmentVerified;
-
-    public static User signInUser(String id, String password) {
-        return User.builder()
-                .id(id)
-                .password(password)
-                .build();
-
-    }
-
-    public static User signUpUser(String id, String password, String name, LocalDateTime birthDate, int gender, String phoneNumber, String nickname, int account_use, String introduction, String profileImage, LocalDateTime createdDatetime, LocalDateTime updatedDatetime, Integer ratingCount, Double mannersTemperature, Integer warningPoints, Boolean emailNotifications, Boolean smsNotifications, Boolean pushNotifications, String deviceToken, LocalDate employmentVerificationDate, Boolean employmentVerified) {
-        return User.builder()
-                .id(id)
-                .password(password)
-                .name(name)
-                .birthDate(birthDate)
-                .gender(gender)
-                .phoneNumber(phoneNumber)
-                .nickname(nickname)
-                .account_use(account_use)
-                .introduction(introduction)
-                .profileImage(profileImage)
-                .createdDatetime(createdDatetime)
-                .updatedDatetime(updatedDatetime)
-                .ratingCount(ratingCount)
-                .mannersTemperature(mannersTemperature)
-                .warningPoints(warningPoints)
-                .emailNotifications(emailNotifications)
-                .smsNotifications(smsNotifications)
-                .pushNotifications(pushNotifications)
-                .deviceToken(deviceToken)
-                .employmentVerificationDate(employmentVerificationDate)
-                .employmentVerified(employmentVerified)
-                .build();
-
-
-    }
+}
