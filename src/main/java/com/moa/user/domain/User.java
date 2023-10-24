@@ -1,8 +1,10 @@
 package com.moa.user.domain;
 
 import com.moa.global.domain.BaseEntity;
+import com.moa.workplace.domain.Workplace;
 import jakarta.persistence.*;
 import lombok.*;
+import software.amazon.awssdk.services.s3.endpoints.internal.Value;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,8 +20,8 @@ public class User extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, nullable = false, length = 100, name = "UUID")
-    private UUID userUuid;
+    @Column(unique = true, nullable = false, length = 100, name = "user_uuid")
+    private String userUuid;
     @Column(length = 45, name = "login_id", unique = true)
     private String loginId;
     @Column(length = 100, name = "password")
@@ -40,12 +42,6 @@ public class User extends BaseEntity{
     private String introduction;
     @Column(length = 100, name = "profileImage_url")
     private String profileImage;
-    @Column(name = "rating_count")
-    private Integer ratingCount;
-    @Column(name = "manners_temperature")
-    private Double mannersTemperature;
-    @Column(name = "warning_points")
-    private Integer warningPoints;
     @Column(name = "email_notifications")
     private Boolean emailNotifications;
     @Column(name = "sms_notifications")
@@ -56,6 +52,10 @@ public class User extends BaseEntity{
     private String deviceToken;
     @Column(name = "employment_verification_date")
     private LocalDate employmentVerificationDate;
+    // 외래키
+    @ManyToOne
+    @JoinColumn(name="workplace_id")
+    private Workplace workplaceId;
     @Column(name = "employment_verified")
     private Boolean employmentVerified;
 }
