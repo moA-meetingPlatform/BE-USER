@@ -5,7 +5,7 @@ spring:
   application:
     name: moa-meetingplatform
   profiles:
-    default: local
+    default: prod
   jpa:
     properties:
       hibernate:
