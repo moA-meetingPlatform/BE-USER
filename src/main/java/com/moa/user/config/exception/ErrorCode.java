@@ -14,6 +14,7 @@ public enum ErrorCode {
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error"),
 	ENTITY_SAVE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "db 저장 실패"),
 	BAD_REQUEST(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
+	FORBIDDEN(HttpStatus.FORBIDDEN, "권한이 없습니다."),
 
 	/*로그인*/
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다."),
