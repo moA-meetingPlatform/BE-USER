@@ -9,8 +9,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Gender implements BaseEnum<Boolean, String> {
-	MEN(true, "남자"),
-	WOMEN(false, "여자");
+	MAN(true, "남자"),
+	WOMAN(false, "여자");
 	private final Boolean code;
 	private final String title;
 }
