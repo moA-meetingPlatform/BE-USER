@@ -3,22 +3,13 @@ server:
 
 spring:
   application:
-    name: moa-meetingplatform
+    name: user-service
   profiles:
     default: local
   jpa:
     properties:
       hibernate:
         default_batch_fetch_size: 100
-  jwt:
-    secret: asdsadasdamklmdklamdklamsldamsdlkasmdkamdklamsdlkm1m13m1kl32m1sadmlsadmkaldmaskldmkla
-    expiration: 86400000
-    header: Authorization
-    prefix: Bearer
-    refresh:
-      expiration: 86400000
-      header: Refresh
-      prefix: Bearer
 
 springdoc:
   swagger-ui:

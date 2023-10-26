@@ -40,7 +40,7 @@ public class SecurityConfig {
 					.permitAll() // CORS 사전 요청 (preflight)을 위한 설정
 					.requestMatchers(
 						"/error",   // 에러 페이지 허용, 허용하지 않으면 에러 발생 시 (ex. 존재하지 않는 url 요청) 403 Forbidden 응답을 반환합니다.
-						"/api/v1/login",
+						"/api/v1/user/auth/**", // 인증 API는 모두 허용
 						"/swagger-ui/**",
 						"/swagger-resources/**",
 						"/api-docs/**") // 특정 경로 패턴에 대한 요청
