@@ -3,11 +3,17 @@ package com.moa.user.presentation;
 
 import com.moa.global.vo.ApiResult;
 import com.moa.user.application.AuthService;
+import com.moa.user.dto.LoginDto;
+import com.moa.user.dto.LoginInfoDto;
 import com.moa.user.dto.UserSignUpDto;
 import com.moa.user.dto.UserSignUpResultDto;
+import com.moa.user.vo.LoginRequest;
+import com.moa.user.vo.LoginResponse;
 import com.moa.user.vo.req.UserSignUpRequest;
 import com.moa.user.vo.res.UserSignUpResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,8 +34,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-	private final ModelMapper modelMapper;
+	private final ModelMapper modelMapper;  // modelMapper 주입
 	private final AuthService authService;
+
+
+	@Operation(summary = "로그인", description = "유저 일반 로그인")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "OK"),
+		@ApiResponse(responseCode = "400", description = "FAIL_LOGIN, 로그인 실패", content = @Content(schema = @Schema(implementation = ApiResult.class))),
+		@ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = @Content(schema = @Schema(implementation = ApiResult.class)))
+	})
+	@PostMapping("/login")
+	public ResponseEntity<ApiResult<LoginResponse>> login(@RequestBody LoginRequest request) {
+		LoginDto loginDto = modelMapper.map(request, LoginDto.class);
+		LoginInfoDto loginInfoDto = authService.login(loginDto);
+		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(loginInfoDto, LoginResponse.class)));
+	}
 
 
 	@Operation(summary = "회원가입", description = "유저 회원가입")

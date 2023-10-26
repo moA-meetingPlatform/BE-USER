@@ -1,15 +1,18 @@
 package com.moa.user.application;
 
 
+import com.moa.user.config.exception.CustomException;
+import com.moa.user.config.exception.ErrorCode;
+import com.moa.user.config.security.JwtTokenProvider;
 import com.moa.user.domain.User;
-import com.moa.user.dto.LoginDto;
-import com.moa.user.dto.UserGetDto;
-import com.moa.user.dto.UserSignUpDto;
-import com.moa.user.dto.UserSignUpResultDto;
+import com.moa.user.dto.*;
 import com.moa.user.infrastructure.UserRepository;
 import com.moa.user.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +27,44 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class AuthServiceImpl implements AuthService {
 
+	private final ModelMapper modelMapper;  // modelMapper 주입
+
+	// security 관련 객체 주입
+	private final AuthenticationManager authenticationManager;
+	private final JwtTokenProvider jwtTokenProvider;
+
 	private final UserRepository userRepository;
 	private final UserService userService;
+
+
+	/**
+	 * 로그인
+	 *
+	 * @param loginDto 로그인 아이디, 비밀번호
+	 * @return LoginInfoDto jwt token 및 유저 정보
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public LoginInfoDto login(LoginDto loginDto) {
+
+		// loginId로 user 조회
+		User user = userRepository.findByLoginId(loginDto.getLoginId())
+			.orElseThrow(() -> new CustomException(ErrorCode.FAIL_LOGIN));
+
+		// password 일치 확인
+		authenticationManager.authenticate(
+			new UsernamePasswordAuthenticationToken(
+				user.getUsername(),
+				loginDto.getPassword()
+			)
+		);
+
+		// jwt token 생성 후 LoginInfoDto에 담아서 리턴
+		String jwtToken = jwtTokenProvider.generateToken(user);
+		LoginInfoDto loginInfoDto = modelMapper.map(user, LoginInfoDto.class);
+		loginInfoDto.setToken(jwtToken);
+		return loginInfoDto;
+	}
 
 
 	@Override
@@ -40,7 +79,7 @@ public class AuthServiceImpl implements AuthService {
 			.userUuid(uuid)
 			.loginId(userSignUpDto.getLoginId())
 			.password(hashedPassword)
-			.userName(userSignUpDto.getUserName())
+			.name(userSignUpDto.getName())
 			.birthDate(userSignUpDto.getBirthDate())
 			.gender(userSignUpDto.getGender())
 			.phoneNumber(userSignUpDto.getPhoneNumber())
@@ -80,7 +119,7 @@ public class AuthServiceImpl implements AuthService {
 
 
 	@Override
-	public LoginDto loginUser(UserLoginIn userLoginIn) {
+	public LoginDto loginUser(LoginRequest loginRequest) {
 		return null;
 	}
 

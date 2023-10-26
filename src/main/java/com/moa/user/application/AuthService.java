@@ -2,10 +2,7 @@ package com.moa.user.application;
 
 
 import com.moa.user.domain.User;
-import com.moa.user.dto.LoginDto;
-import com.moa.user.dto.UserGetDto;
-import com.moa.user.dto.UserSignUpDto;
-import com.moa.user.dto.UserSignUpResultDto;
+import com.moa.user.dto.*;
 import com.moa.user.vo.*;
 
 import java.util.List;
@@ -16,6 +13,8 @@ import java.util.List;
  */
 //
 public interface AuthService {
+
+	LoginInfoDto login(LoginDto loginDto);
 
 	// 사용자를 생성하고 생성된 사용자의 ID를 반환합니다.
 	UserSignUpResultDto signUp(UserSignUpDto userSignUpDto);
@@ -34,7 +33,7 @@ public interface AuthService {
 	void modify(String UUID, UserModifyIn userModifyIn);
 
 	// 사용자를 로그인하고 로그인 정보를 반환합니다.
-	LoginDto loginUser(UserLoginIn userLoginIn);
+	LoginDto loginUser(LoginRequest loginRequest);
 
 	// 토큰을 통해 사용자 정보를 가져옵니다.
 	UserGetDto getUserDtoFromToken(String token);
