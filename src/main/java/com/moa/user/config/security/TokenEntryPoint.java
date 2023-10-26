@@ -2,7 +2,7 @@ package com.moa.user.config.security;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.moa.user.common.ApiResult;
+import com.moa.global.vo.ApiResult;
 import com.moa.user.config.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
