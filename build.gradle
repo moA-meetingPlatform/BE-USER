@@ -72,6 +72,10 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// log수집을 위한 logback
+	implementation 'ch.qos.logback:logback-classic:1.2.6'
+
 }
 
 tasks.named('test') {
