@@ -1,4 +1,4 @@
-package com.moa.user.config.db;
+package com.moa.global.config.db;
 
 
 import org.springframework.beans.factory.annotation.Qualifier;

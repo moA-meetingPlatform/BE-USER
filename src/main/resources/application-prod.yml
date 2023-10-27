@@ -26,10 +26,18 @@ spring:
         password: ${SLAVE_DB_PASSWORD}
         driver-class-name: com.mysql.cj.jdbc.Driver
 
+
 logging:
   level:
     org.hibernate.orm.jdbc.bind: trace
     com.moa.user: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+
+JWT:
+  secret-key: ${JWT_SECRET}
+  expiration-time: 86400000 # 1 day, 1000 * 60 * 60 * 24, 추후 수정
+  header: Authorization
+  prefix: Bearer
 

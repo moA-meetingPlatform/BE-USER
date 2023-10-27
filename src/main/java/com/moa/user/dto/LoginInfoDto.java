@@ -3,6 +3,8 @@ package com.moa.user.dto;
 
 import lombok.*;
 
+import java.util.UUID;
+
 
 @Builder
 @Getter
@@ -10,12 +12,14 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserGetDto {
+public class LoginInfoDto {
 
+	private Long id;
 	private String loginId;
 	private String name;
 	private String email;
 	private String phone;
-	private String address;
+	private UUID userUuid;
+	private String token;
 
 }

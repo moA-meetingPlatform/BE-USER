@@ -1,73 +1,73 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.1.4'
-	id 'io.spring.dependency-management' version '1.1.3'
+    id 'java'
+    id 'org.springframework.boot' version '3.1.2'
+    id 'io.spring.dependency-management' version '1.1.2'
 }
 
 group = 'com.moa'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+    sourceCompatibility = '17'
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 
-	//AWS
-	implementation 'software.amazon.awssdk:s3:2.20.138'
-
-
+//    //AWS
+//    implementation 'software.amazon.awssdk:s3:2.20.138'
 
 
-	implementation 'org.jetbrains:annotations:24.0.0'
+    implementation 'org.jetbrains:annotations:24.0.0'
 
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	//jwt
-	implementation 'javax.xml.bind:jaxb-api'
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
-	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
-	//swagger
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    //jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5',
+            'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-	//mapper
-	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
+    // Swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 
-	//redis
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    //mapper
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
 
-	//json
-	implementation 'io.hypersistence:hypersistence-utils-hibernate-60:3.5.0'
-	//json 파싱
-	implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-	//Querydsl 추가
-	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
-	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
-	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
-	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+//    //json
+//    implementation 'io.hypersistence:hypersistence-utils-hibernate-60:3.5.0'
+//    //json 파싱
+//    implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
 
-	//gson - json 메시지를 다루기 위한 라이브러리
-	implementation 'com.google.code.gson:gson'
+    //Querydsl 추가
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-	//ImmutableMap
-	implementation 'com.google.guava:guava:30.1.1-jre'
+//    //gson - json 메시지를 다루기 위한 라이브러리
+//    implementation 'com.google.code.gson:gson'
+
+    //ImmutableMap
+    implementation 'com.google.guava:guava:30.1.1-jre'
+
+
 
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -76,8 +76,13 @@ dependencies {
 	// log수집을 위한 logback
 	implementation 'ch.qos.logback:logback-classic:1.2.6'
 
+
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
