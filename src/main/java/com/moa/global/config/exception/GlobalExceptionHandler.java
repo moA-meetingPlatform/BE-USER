@@ -1,4 +1,4 @@
-package com.moa.user.config.exception;
+package com.moa.global.config.exception;
 
 
 import com.moa.global.vo.ApiResult;

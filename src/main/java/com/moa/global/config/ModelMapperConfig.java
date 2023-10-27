@@ -1,5 +1,5 @@
 // 패키지 선언: 현재 클래스는 'com.moa.user.config.mapper' 패키지에 위치합니다.
-package com.moa.user.config;
+package com.moa.global.config;
 
 
 import org.modelmapper.ModelMapper;

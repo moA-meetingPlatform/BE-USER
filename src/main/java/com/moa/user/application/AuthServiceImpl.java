@@ -1,8 +1,8 @@
 package com.moa.user.application;
 
 
-import com.moa.user.config.exception.CustomException;
-import com.moa.user.config.exception.ErrorCode;
+import com.moa.global.config.exception.CustomException;
+import com.moa.global.config.exception.ErrorCode;
 import com.moa.user.config.security.JwtTokenProvider;
 import com.moa.user.domain.User;
 import com.moa.user.dto.*;

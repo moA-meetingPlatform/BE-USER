@@ -1,8 +1,8 @@
 package com.moa.user.utils;
 
 
-import com.moa.user.config.exception.CustomException;
-import com.moa.user.config.exception.ErrorCode;
+import com.moa.global.config.exception.CustomException;
+import com.moa.global.config.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

@@ -1,7 +1,7 @@
 package com.moa.user.domain.converter;
 
 
-import com.moa.user.common.AbstractBaseEnumConverter;
+import com.moa.global.AbstractBaseEnumConverter;
 import com.moa.user.domain.Gender;
 
 
