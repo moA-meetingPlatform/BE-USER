@@ -74,12 +74,15 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	// log수집을 위한 logback
-	implementation 'ch.qos.logback:logback-classic:1.2.6'
+    implementation 'ch.qos.logback:logback-classic'
+//    implementation 'org.slf4j:slf4j-api:1.7.32'
+
 
 
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+
 
 }
 
