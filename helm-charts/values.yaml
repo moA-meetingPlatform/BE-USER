@@ -102,3 +102,8 @@ env:
       secretKeyRef:
         name: db-passwords
         key: slave-db-password
+  - name: JWT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: user-jwt-secret
+        key: JWT_SECRET
