@@ -1,4 +1,4 @@
-package com.moa.user.vo.req;
+package com.moa.user.vo.request;
 
 
 import com.moa.user.domain.Gender;
@@ -22,7 +22,7 @@ public class UserSignUpRequest {
 
 	@Schema(description = "이름", nullable = false, requiredMode = Schema.RequiredMode.REQUIRED, example = "홍길동")
 	private String name;
-	
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Schema(description = "생년월일", nullable = false, requiredMode = Schema.RequiredMode.REQUIRED, example = "2000-01-01")
 	private LocalDate birthDate;
