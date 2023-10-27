@@ -1,7 +1,7 @@
 package com.moa.global.vo;
 
 
-import com.moa.user.config.exception.ErrorCode;
+import com.moa.global.config.exception.ErrorCode;
 
 
 public record ApiResult<T>(

@@ -1,4 +1,4 @@
-package com.moa.user.common;
+package com.moa.global;
 
 
 public interface BaseEnum<T, K> {

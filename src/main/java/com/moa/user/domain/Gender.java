@@ -1,7 +1,7 @@
 package com.moa.user.domain;
 
 
-import com.moa.user.common.BaseEnum;
+import com.moa.global.BaseEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
