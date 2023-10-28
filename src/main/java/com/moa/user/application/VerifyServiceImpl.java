@@ -4,6 +4,7 @@ package com.moa.user.application;
 import com.moa.global.config.exception.CustomException;
 import com.moa.global.config.exception.ErrorCode;
 import com.moa.user.domain.redis.EmailVerifyCode;
+import com.moa.user.dto.VerifyEmailDto;
 import com.moa.user.infrastructure.redis.EmailVerifyCodeRedisRepository;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -11,6 +12,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +27,11 @@ public class VerifyServiceImpl implements VerifyService {
 
 	private final String MAIL_SUBJECT = "[MOA] 이메일 인증 코드";
 
+	@Value("${spring.mail.username}")
+	private String configEmail;
 
-	public void verifyEmail(String email) {
+
+	public void sendEmail(String email) {
 		String code = RandomStringUtils.randomAlphanumeric(6); // 코드 생성 (6자리 영어 + 숫자)
 		log.debug("code: {}", code);
 
@@ -47,13 +52,27 @@ public class VerifyServiceImpl implements VerifyService {
 	}
 
 
+	public void verifyEmailByCode(VerifyEmailDto verifyEmailDto) {
+		String code = verifyEmailDto.getCode();
+		String email = verifyEmailDto.getEmail();
+
+		// redis에 저장된 인증번호 확인
+		EmailVerifyCode emailVerifyCode = emailVerifyCodeRedisRepository.findById(email)
+			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_CERT_CODE));   // 인증번호가 만료되었거나 존재하지 않는 경우
+		if (!emailVerifyCode.getCode().equals(code)) throw new CustomException(ErrorCode.INVALID_CERT_CODE);  // 인증번호가 일치하지 않는 경우
+
+		// 확인 후 redis에 저장된 인증번호 삭제
+		emailVerifyCodeRedisRepository.delete(emailVerifyCode);
+	}
+
+
 	public void sendCodeEmail(String email, String code) throws MessagingException {
 		MimeMessage message = sender.createMimeMessage();
 		message.addRecipients(Message.RecipientType.TO, email);    // 수신자 설정
 		message.setSubject(MAIL_SUBJECT); // 메일 제목 설정
 
 		message.setText(makeEmailContentWithCode(code), "utf-8", "html"); // 메일 내용 설정
-		message.setFrom("gbinu0587@gmail.com");
+		message.setFrom(configEmail);
 		sender.send(message); // 메일 전송
 	}
 
