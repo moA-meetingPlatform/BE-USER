@@ -14,8 +14,8 @@ spring:
   data:
     redis:
       port: 6379
-      host: 127.0.0.1
-      password: ${REDIS_PASSWORD}
+      host: ${REDIS_URL}
+      password: ${REDIS_PW}
       connect-timeout: 1000
 
   mail:
@@ -29,6 +29,7 @@ spring:
           starttls:
             enable: true
           auth: true
+
 
 springdoc:
   swagger-ui:
