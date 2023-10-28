@@ -10,7 +10,7 @@ import org.springframework.data.redis.core.RedisHash;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-@RedisHash(value = "phoneCertCode", timeToLive = 10)    // 10분 동안 유효한 인증번호
+@RedisHash(value = "emailVerifyCode", timeToLive = 600)    // 10분
 public class EmailVerifyCode {
 
 	@Id

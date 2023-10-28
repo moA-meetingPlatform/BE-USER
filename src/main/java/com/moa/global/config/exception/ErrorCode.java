@@ -22,7 +22,11 @@ public enum ErrorCode {
 	NEED_INTERGRATED_LOGIN(HttpStatus.NOT_FOUND, "통합ID 로그인이 필요합니다"),
 
 	/*유저*/
-	NOT_FOUND_USER(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다.");
+	NOT_FOUND_USER(HttpStatus.NOT_FOUND, "존재하지 않는 유저입니다."),
+
+	/*기타 인증*/
+	INVALID_CERT_CODE(HttpStatus.BAD_REQUEST, "인증번호가 유효하지 않습니다."),
+	;
 
 	private final HttpStatus status;
 	private final String description;
