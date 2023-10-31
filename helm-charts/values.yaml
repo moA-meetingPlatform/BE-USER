@@ -28,7 +28,10 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: {}
+podAnnotations: 
+  co.elastic.logs/module: logback
+  co.elastic.logs/fileset.stdout: "access"
+  co.elastic.logs/fileset.stderr: "error"
 podLabels: {}
 
 podSecurityContext: {}
@@ -107,3 +110,13 @@ env:
       secretKeyRef:
         name: user-jwt-secret
         key: JWT_SECRET
+  - name: MAIL_PW
+    valueFrom:
+      secretKeyRef:
+        name: mail-secrets
+        key: MAIL_PW
+  - name: MAIL_USER_NAME
+    valueFrom:
+      secretKeyRef:
+        name: mail-secrets
+        key: MAIL_USER_NAME
