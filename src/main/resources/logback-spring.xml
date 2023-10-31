@@ -1,23 +1,22 @@
-<appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-        <providers>
-            <timestamp>
-                <timeZone>Asia/Seoul</timeZone>
-            </timestamp>
-            <pattern>
-                {
-                "timestamp": "%d{yyyy-MM-dd'T'HH:mm:ss.SSS'Z', Asia/Seoul}",
-                "level": "%level",
-                "thread": "%thread",
-                "logger": "%logger",
-                "message": "%message",
-                "context": "be-user"
-                }
-            </pattern>
-        </providers>
-    </encoder>
-</appender>
+<configuration>
 
-<root level="info">
-    <appender-ref ref="JSON" />
-</root>
+    <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>Asia/Seoul</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {"timestamp": "%d{yyyy-MM-dd'T'HH:mm:ss.SSS'Z', Asia/Seoul}", "level": "%level", "thread": "%thread", "logger": "%logger", "message": "%message", "context": "be-user"}
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="JSON" />
+    </root>
+
+</configuration>
