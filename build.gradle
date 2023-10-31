@@ -75,6 +75,8 @@ dependencies {
 
 	// log수집을 위한 logback
     implementation 'ch.qos.logback:logback-classic'
+    implementation 'net'
+
 //    implementation 'org.slf4j:slf4j-api:1.7.32'
 
 

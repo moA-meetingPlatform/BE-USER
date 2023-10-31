@@ -1,0 +1,24 @@
+<appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+        <providers>
+            <timestamp>
+                <timeZone>Asia/Seoul</timeZone>
+            </timestamp>
+            <pattern>
+                <pattern>
+                    {
+                    "timestamp": "%d{yyyy-MM-dd'T'HH:mm:ss.SSS'Z', Asia/Seoul}",
+                    "level": "%level",
+                    "thread": "%thread",
+                    "logger": "%logger",
+                    "message": "%message",
+                    "context": "backend"
+                    }
+                </pattern>
+            </pattern>
+        </providers>
+    </encoder>
+</appender>
+<root level="info">
+<appender-ref ref="JSON" />
+</root>
