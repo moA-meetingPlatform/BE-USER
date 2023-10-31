@@ -8,7 +8,7 @@ image:
   repository: awdfaf/be-user
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: dev-64
+  tag: dev-65
 
 container:
   port: 8000
