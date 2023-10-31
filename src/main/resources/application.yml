@@ -14,8 +14,7 @@ spring:
   data:
     redis:
       port: 6379
-      host: ${REDIS_URL}
-      password: ${REDIS_PW}
+      host: localhost
       connect-timeout: 1000
 
   mail:
