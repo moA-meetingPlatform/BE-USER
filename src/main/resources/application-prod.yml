@@ -10,6 +10,12 @@ spring:
         format_sql: true
         show_sql: true
 
+  data:
+    redis:
+      port: 6379
+      host: 10.176.8.126
+      connect-timeout: 1000
+
   datasource:
     master:
       hikari:
