@@ -18,6 +18,7 @@ public class HealthCheckController {
 
 	@GetMapping("/test")
 	public ResponseEntity<ApiResult<String>> test() {
+		log.info("user test");
 		return ResponseEntity.ok(ApiResult.ofSuccess("user test"));
 	}
 
