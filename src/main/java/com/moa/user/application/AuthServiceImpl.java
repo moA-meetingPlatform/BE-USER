@@ -84,8 +84,8 @@ public class AuthServiceImpl implements AuthService {
 			.gender(userSignUpDto.getGender())
 			.phoneNumber(userSignUpDto.getPhoneNumber())
 			.nickname(userSignUpDto.getNickname())
-			.accountUse(true)
-			.introduction(userSignUpDto.getIntroduction())
+			.userSoftDelete(false)
+			.userIntroduce(userSignUpDto.getIntroduction())
 			.build();
 		userRepository.save(user);
 		return UserSignUpResultDto.builder()

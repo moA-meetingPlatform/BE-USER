@@ -39,6 +39,7 @@ public class SecurityConfig {
 					.requestMatchers(org.springframework.web.cors.CorsUtils::isPreFlightRequest)
 					.permitAll() // CORS 사전 요청 (preflight)을 위한 설정
 					.requestMatchers(
+						"/api/v1/user/**", // TODO: 제거
 						"/api/v1/user/verify/**",   // 인증 API는 모두 허용
 						"/api/v1/user/auth/**", // 인증 API는 모두 허용
 						"/api/v1/user/id-check", // 아이디 중복 확인 API 허용
