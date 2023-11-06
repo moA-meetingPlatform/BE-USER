@@ -62,7 +62,7 @@ public class User extends BaseEntity implements UserDetails {
 	private String userIntroduce;
 
 	@Column(length = 100, name = "profile_image_url")
-	private String profileImage;
+	private String profileImageUrl;
 
 	@Column(name = "email_notification_status")
 	private Boolean emailNotificationStatus;

@@ -5,8 +5,13 @@ import com.moa.global.config.exception.CustomException;
 import com.moa.global.config.exception.ErrorCode;
 import com.moa.user.config.security.JwtTokenProvider;
 import com.moa.user.domain.User;
-import com.moa.user.dto.*;
+import com.moa.user.domain.UserScore;
+import com.moa.user.dto.LoginDto;
+import com.moa.user.dto.LoginInfoDto;
+import com.moa.user.dto.UserSignUpDto;
+import com.moa.user.dto.UserSignUpResultDto;
 import com.moa.user.infrastructure.UserRepository;
+import com.moa.user.infrastructure.UserScoreRepository;
 import com.moa.user.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +22,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 
@@ -34,6 +38,7 @@ public class AuthServiceImpl implements AuthService {
 	private final JwtTokenProvider jwtTokenProvider;
 
 	private final UserRepository userRepository;
+	private final UserScoreRepository userScoreRepository;
 	private final UserService userService;
 
 
@@ -87,7 +92,13 @@ public class AuthServiceImpl implements AuthService {
 			.userSoftDelete(false)
 			.userIntroduce(userSignUpDto.getIntroduction())
 			.build();
+
+		// user 테이블에 저장
 		userRepository.save(user);
+
+		// userScore 테이블에도 저장
+		userScoreRepository.save(new UserScore(user));
+
 		return UserSignUpResultDto.builder()
 			.useruuid(uuid)
 			.build();
@@ -95,50 +106,8 @@ public class AuthServiceImpl implements AuthService {
 
 
 	@Override
-	public UserGetDto getUserByLoginId(String loginId) {
-		return null;
-	}
-
-
-	@Override
-	public UserGetDto getUserByUUID(String UUID) {
-		return null;
-	}
-
-
-	@Override
-	public List<User> getAllUsers() {
-		return null;
-	}
-
-
-	@Override
 	public void modify(String UUID, UserModifyIn userModifyIn) {
 
-	}
-
-
-	@Override
-	public LoginDto loginUser(LoginRequest loginRequest) {
-		return null;
-	}
-
-
-	@Override
-	public UserGetDto getUserDtoFromToken(String token) {
-		return null;
-	}
-
-
-	@Override
-	public Long getUserId(String loginId) {
-		return null;
-	}
-
-
-	@Override
-	public Long getUserIdFromToken(String token) {
-		return null;
 	}
 
 
@@ -174,12 +143,6 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public CheckUserOut getOtherUserInfo(CheckUserIn checkUserIn) {
-		return null;
-	}
-
-
-	@Override
-	public User getUserFromToken(String token) {
 		return null;
 	}
 

@@ -1,11 +1,11 @@
 package com.moa.user.application;
 
 
-import com.moa.user.domain.User;
-import com.moa.user.dto.*;
+import com.moa.user.dto.LoginDto;
+import com.moa.user.dto.LoginInfoDto;
+import com.moa.user.dto.UserSignUpDto;
+import com.moa.user.dto.UserSignUpResultDto;
 import com.moa.user.vo.*;
-
-import java.util.List;
 
 
 /**
@@ -20,29 +20,9 @@ public interface AuthService {
 	UserSignUpResultDto signUp(UserSignUpDto userSignUpDto);
 
 	// --------------------------------------------------------------
-	// 로그인 ID를 통해 사용자 정보를 가져옵니다.
-	UserGetDto getUserByLoginId(String loginId);
-
-	// UUID를 통해 사용자 정보를 가져옵니다.
-	UserGetDto getUserByUUID(String UUID);
-
-	// 모든 사용자의 목록을 가져옵니다.
-	List<User> getAllUsers();
 
 	// 주어진 UUID의 사용자 정보를 수정합니다.
 	void modify(String UUID, UserModifyIn userModifyIn);
-
-	// 사용자를 로그인하고 로그인 정보를 반환합니다.
-	LoginDto loginUser(LoginRequest loginRequest);
-
-	// 토큰을 통해 사용자 정보를 가져옵니다.
-	UserGetDto getUserDtoFromToken(String token);
-
-	// 로그인 ID를 통해 사용자 ID를 가져옵니다.
-	Long getUserId(String loginId);
-
-	// 토큰을 통해 사용자 ID를 가져옵니다.
-	Long getUserIdFromToken(String token);
 
 	// 사용자 이름과 전화번호를 통해 ID를 찾습니다.
 	FindIDOut findID(String userName, String phone);
@@ -61,9 +41,6 @@ public interface AuthService {
 
 	// 사용자 정보를 확인합니다.
 	CheckUserOut getOtherUserInfo(CheckUserIn checkUserIn);
-
-	// 토큰을 통해 사용자를 가져옵니다.
-	User getUserFromToken(String token);
 
 	// OAuth 정보를 통해 사용자를 찾습니다.
 	LoginDto findOauth(OauthIn oauthIn);

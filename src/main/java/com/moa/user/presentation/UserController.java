@@ -3,6 +3,8 @@ package com.moa.user.presentation;
 
 import com.moa.global.vo.ApiResult;
 import com.moa.user.application.UserService;
+import com.moa.user.dto.UserGetProfileDto;
+import com.moa.user.vo.response.UserGetProfileResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -14,11 +16,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 
 @Tag(name = "User Controller", description = "로그인, 회원가입 API")
@@ -28,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
+	private final ModelMapper modelMapper;
 	private final UserService userService;
 
 
@@ -44,6 +50,13 @@ public class UserController {
 	public ResponseEntity<ApiResult<Void>> idCheck(@RequestParam("id") String loginId) {
 		userService.checkCanUseLoginId(loginId);
 		return ResponseEntity.ok(ApiResult.ofSuccess(null));
+	}
+
+
+	@GetMapping("/profile")
+	public ResponseEntity<ApiResult<UserGetProfileResponse>> getUserProfile(@RequestParam("UserUuid") UUID userUuid) {
+		UserGetProfileDto dto = userService.getUserProfileByUUID(userUuid);
+		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(dto, UserGetProfileResponse.class)));
 	}
 
 }
