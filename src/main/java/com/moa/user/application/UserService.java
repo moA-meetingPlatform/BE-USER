@@ -1,7 +1,7 @@
 package com.moa.user.application;
 
 
-import com.moa.user.dto.UserGetDto;
+import com.moa.user.dto.UserGetProfileDto;
 import com.moa.user.dto.UserPwDto;
 import org.springframework.security.core.Authentication;
 
@@ -18,7 +18,7 @@ public interface UserService {
 	/**
 	 * UUID로 사용자 정보 가져오기
 	 */
-	UserGetDto getUserByUUID(UUID uuid);
+	UserGetProfileDto getUserProfileByUUID(UUID uuid);
 
 	/**
 	 * 사용자 비밀번호 변경

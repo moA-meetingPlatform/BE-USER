@@ -3,11 +3,15 @@ package com.moa.user.application;
 
 import com.moa.global.config.exception.CustomException;
 import com.moa.global.config.exception.ErrorCode;
-import com.moa.user.dto.UserGetDto;
+import com.moa.user.domain.User;
+import com.moa.user.domain.UserScore;
+import com.moa.user.dto.UserGetProfileDto;
 import com.moa.user.dto.UserPwDto;
 import com.moa.user.infrastructure.UserRepository;
+import com.moa.user.infrastructure.UserScoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +24,9 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
 	//	private final PasswordEncoder passwordEncoder;
+	private final ModelMapper modelMapper;
 	private final UserRepository userRepository;
+	private final UserScoreRepository userScoreRepository;
 
 
 	@Override
@@ -30,8 +36,15 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public UserGetDto getUserByUUID(UUID uuid) {
-		return null;
+	public UserGetProfileDto getUserProfileByUUID(UUID uuid) {
+		// user, userScore 조회
+		User user = userRepository.findByUserUuid(uuid).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+		UserScore userScore = userScoreRepository.findByUser(user).orElse(null);
+
+		// dto에 user, userScore set
+		UserGetProfileDto dto = modelMapper.map(user, UserGetProfileDto.class);
+		dto.setUserScore(userScore);
+		return dto;
 	}
 
 
