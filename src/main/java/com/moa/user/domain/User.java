@@ -2,6 +2,7 @@ package com.moa.user.domain;
 
 
 import com.moa.global.domain.BaseEntity;
+import com.moa.user.dto.CompanyCertificationDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -84,6 +85,19 @@ public class User extends BaseEntity implements UserDetails {
 
 	@Column(name = "company_id", nullable = false)
 	private Integer companyId;  // Company 테이블의 id 저장됨
+
+
+	/**
+	 * 회사 인증 정보 변경
+	 * (회원가입, 회사 재인증시 사용)
+	 *
+	 * @param companyCertificationDto
+	 */
+	public void updateCompanyCertification(CompanyCertificationDto companyCertificationDto) {
+		this.companyId = companyCertificationDto.getCompanyId();
+		this.companyCertificationStatus = true;
+		this.companyCertificationDate = LocalDate.now();
+	}
 
 
 	@Override

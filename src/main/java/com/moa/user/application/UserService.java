@@ -1,6 +1,7 @@
 package com.moa.user.application;
 
 
+import com.moa.user.dto.CompanyCertificationDto;
 import com.moa.user.dto.UserGetProfileDto;
 import com.moa.user.dto.UserPwDto;
 import org.springframework.security.core.Authentication;
@@ -29,5 +30,7 @@ public interface UserService {
 	 * 사용자 계정 탈퇴
 	 */
 	Boolean withdrawal(Authentication authentication);
+
+	void updateCompanyCertification(CompanyCertificationDto companyCertificationDto);
 
 }
