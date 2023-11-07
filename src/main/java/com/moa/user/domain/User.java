@@ -2,6 +2,7 @@ package com.moa.user.domain;
 
 
 import com.moa.global.domain.BaseEntity;
+import com.moa.user.dto.CompanyCertificationDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,7 +44,7 @@ public class User extends BaseEntity implements UserDetails {
 	@Column(nullable = false, length = 100, name = "name")
 	private String name;
 
-	@Column(nullable = false, length = 100, name = "birth_date")
+	@Column(nullable = false, name = "birth_date")
 	private LocalDate birthDate;
 
 	@Column(columnDefinition = "tinyint default 1", nullable = false, name = "gender")
@@ -76,14 +77,27 @@ public class User extends BaseEntity implements UserDetails {
 	@Column(name = "user_device_token")
 	private String userDeviceToken;
 
-	@Column(name = "workplace_verification_date")
-	private LocalDate workplaceVerificationDate;
+	@Column(name = "company_certification_date")
+	private LocalDate companyCertificationDate;
 
-	@Column(columnDefinition = "tinyint default 1", name = "workplace_verified")
-	private Boolean workplaceVerified;
+	@Column(columnDefinition = "tinyint default 1", name = "company_certification_status")
+	private Boolean companyCertificationStatus;
 
 	@Column(name = "company_id", nullable = false)
 	private Integer companyId;  // Company 테이블의 id 저장됨
+
+
+	/**
+	 * 회사 인증 정보 변경
+	 * (회원가입, 회사 재인증시 사용)
+	 *
+	 * @param companyCertificationDto
+	 */
+	public void updateCompanyCertification(CompanyCertificationDto companyCertificationDto) {
+		this.companyId = companyCertificationDto.getCompanyId();
+		this.companyCertificationStatus = true;
+		this.companyCertificationDate = LocalDate.now();
+	}
 
 
 	@Override
@@ -105,7 +119,7 @@ public class User extends BaseEntity implements UserDetails {
 	 */
 	@Override
 	public boolean isAccountNonExpired() {
-		return this.workplaceVerified;
+		return this.companyCertificationStatus;
 	}
 
 

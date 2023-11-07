@@ -1,17 +1,20 @@
 package com.moa.user.application;
 
 
+import com.moa.company.application.CompanyService;
 import com.moa.global.config.exception.CustomException;
 import com.moa.global.config.exception.ErrorCode;
-import com.moa.user.domain.redis.EmailVerifyCode;
-import com.moa.user.dto.VerifyEmailDto;
-import com.moa.user.infrastructure.redis.EmailVerifyCodeRedisRepository;
+import com.moa.user.domain.redis.CertificationCompanyEmail;
+import com.moa.user.dto.CertificationCompanyEmailDto;
+import com.moa.user.dto.CompanyCertificationDto;
+import com.moa.user.infrastructure.redis.CompanyEmailCertificateRedisRepository;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -20,30 +23,53 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 @Slf4j
-public class VerifyServiceImpl implements VerifyService {
+public class CertificationServiceImpl implements CertificationService {
+
+	private final static String MAIL_SUBJECT = "[MOA] 이메일 인증 코드";
+	private final ModelMapper modelMapper;
 
 	private final JavaMailSender sender;
-	private final EmailVerifyCodeRedisRepository emailVerifyCodeRedisRepository;
+	private final CompanyEmailCertificateRedisRepository companyEmailCertificateRedisRepository;
 
-	private final String MAIL_SUBJECT = "[MOA] 이메일 인증 코드";
+	private final CompanyService companyService;
+	private final UserService userService;
 
 	@Value("${spring.mail.username}")
 	private String configEmail;
 
 
+	/**
+	 * 회사 이메일 인증 요청
+	 * - 회사 이메일 도메인을 추출하여 회사 id 조회
+	 * - 인증코드 생성
+	 * - Redis에 이메일 인증 코드 및 회사 id 저장
+	 * - 인증코드를 포함한 이메일 전송
+	 *
+	 * @param email
+	 */
 	public void sendEmail(String email) {
+		/* 이메일 도메인 추출 */
+		String companyEmailDomain = email.split("@")[1];
+
+		/*
+		 회사 도메인인지 확인, 회사 도메인이면 companyId 리턴됨
+		 - 회사 도메인이 아니면 CustomException(NOT_FOUND_RESOURCE) 발생
+		 */
+		int companyId = companyService.getCompanyIdByCompanyEmail(companyEmailDomain);
+
 		String code = RandomStringUtils.randomAlphanumeric(6); // 코드 생성 (6자리 영어 + 숫자)
 		log.debug("code: {}", code);
 
-		// Redis에 이메일 인증 코드 저장
-		emailVerifyCodeRedisRepository.save(
-			EmailVerifyCode.builder()
-				.email(email)
+		/* Redis에 이메일 인증 코드 및 회사 id 저장 */
+		companyEmailCertificateRedisRepository.save(
+			CertificationCompanyEmail.builder()
+				.companyEmail(email)
 				.code(code)
+				.companyId(companyId)
 				.build()
 		);
 
-		// 인증코드를 포함한 이메일 전송
+		/* 인증코드를 포함한 이메일 전송 */
 		try {
 			sendCodeEmail(email, code);
 		} catch (MessagingException e) {
@@ -52,21 +78,41 @@ public class VerifyServiceImpl implements VerifyService {
 	}
 
 
-	public void verifyEmailByCode(VerifyEmailDto verifyEmailDto) {
-		String code = verifyEmailDto.getCode();
-		String email = verifyEmailDto.getEmail();
+	/**
+	 * 이메일 인증번호 확인
+	 * - redis에 저장된 인증정보와 인증번호 비교
+	 *
+	 * @param certificationCompanyEmailDto 이메일, 인증 코드
+	 */
+	public void confirmEmailAndCertificationCompany(CertificationCompanyEmailDto certificationCompanyEmailDto) {
+		String code = certificationCompanyEmailDto.getCode();
 
-		// redis에 저장된 인증번호 확인
-		EmailVerifyCode emailVerifyCode = emailVerifyCodeRedisRepository.findById(email)
+		// redis에 저장된 인증정보 확인 (인증번호를 전송한 회사 이메일을 ID로 인증번호, 회사id 조회)
+		CertificationCompanyEmail certificationCompanyEmail = companyEmailCertificateRedisRepository.findById(certificationCompanyEmailDto.getCompanyEmail())
 			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_CERT_CODE));   // 인증번호가 만료되었거나 존재하지 않는 경우
-		if (!emailVerifyCode.getCode().equals(code)) throw new CustomException(ErrorCode.INVALID_CERT_CODE);  // 인증번호가 일치하지 않는 경우
+		if (!certificationCompanyEmail.getCode().equals(code)) throw new CustomException(ErrorCode.INVALID_CERT_CODE);  // 인증번호가 일치하지 않는 경우
 
-		// 확인 후 redis에 저장된 인증번호 삭제
-		emailVerifyCodeRedisRepository.delete(emailVerifyCode);
+		log.debug("emailVerifyCode - companyId: {}", certificationCompanyEmail.getCompanyId());
+
+		// 회사 인증 정보 업데이트
+		userService.updateCompanyCertification(
+			new CompanyCertificationDto(certificationCompanyEmailDto.getUserUuid(), certificationCompanyEmail)
+		);
+
+		// 확인 후 redis에 저장된 인증정보 삭제
+		companyEmailCertificateRedisRepository.delete(certificationCompanyEmail);
+
 	}
 
 
-	public void sendCodeEmail(String email, String code) throws MessagingException {
+	/**
+	 * 인증코드를 포함한 이메일 전송
+	 *
+	 * @param email 수신자 이메일
+	 * @param code  인증코드
+	 * @throws MessagingException 메일 전송 실패
+	 */
+	private void sendCodeEmail(String email, String code) throws MessagingException {
 		MimeMessage message = sender.createMimeMessage();
 		message.addRecipients(Message.RecipientType.TO, email);    // 수신자 설정
 		message.setSubject(MAIL_SUBJECT); // 메일 제목 설정
@@ -77,6 +123,12 @@ public class VerifyServiceImpl implements VerifyService {
 	}
 
 
+	/**
+	 * 인증코드를 포함한 이메일 내용 생성
+	 *
+	 * @param code 인증코드
+	 * @return 이메일 내용
+	 */
 	private String makeEmailContentWithCode(String code) {
 		String contentStr =
 			"""

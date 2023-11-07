@@ -10,11 +10,12 @@ import org.springframework.data.redis.core.RedisHash;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-@RedisHash(value = "emailVerifyCode", timeToLive = 600)    // 10분
-public class EmailVerifyCode {
+@RedisHash(value = "CertificationCompanyEmail", timeToLive = 600)    // 단위: second, 60*10 => 10분
+public class CertificationCompanyEmail {
 
 	@Id
-	private String email;
+	private String companyEmail;
 	private String code;
+	private Integer companyId;
 
 }

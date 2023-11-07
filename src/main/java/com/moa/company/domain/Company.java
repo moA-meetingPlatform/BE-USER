@@ -17,7 +17,7 @@ public class Company extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 
 	@Column(name = "company_name", nullable = false)
 	private String companyName;

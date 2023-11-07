@@ -5,6 +5,7 @@ import com.moa.global.config.exception.CustomException;
 import com.moa.global.config.exception.ErrorCode;
 import com.moa.user.domain.User;
 import com.moa.user.domain.UserScore;
+import com.moa.user.dto.CompanyCertificationDto;
 import com.moa.user.dto.UserGetProfileDto;
 import com.moa.user.dto.UserPwDto;
 import com.moa.user.infrastructure.UserRepository;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -41,7 +43,7 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByUserUuid(uuid).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 		UserScore userScore = userScoreRepository.findByUser(user).orElse(null);
 
-		// dto에 user, userScore set
+		// dto에 user, userScore setting
 		UserGetProfileDto dto = modelMapper.map(user, UserGetProfileDto.class);
 		dto.setUserScore(userScore);
 		return dto;
@@ -57,6 +59,19 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Boolean withdrawal(Authentication authentication) {
 		return null;
+	}
+
+
+	/**
+	 * 회사 인증 정보 수정
+	 *
+	 * @param companyCertificationDto
+	 */
+	@Override
+	@Transactional
+	public void updateCompanyCertification(CompanyCertificationDto companyCertificationDto) {
+		User user = userRepository.findByUserUuid(companyCertificationDto.getUserUuid()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+		user.updateCompanyCertification(companyCertificationDto);
 	}
 
 }
