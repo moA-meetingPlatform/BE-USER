@@ -83,7 +83,7 @@ public class User extends BaseEntity implements UserDetails {
 	@Column(columnDefinition = "tinyint default 1", name = "company_certification_status")
 	private Boolean companyCertificationStatus;
 
-	@Column(name = "company_id", nullable = false)
+	@Column(name = "company_id")
 	private Integer companyId;  // Company 테이블의 id 저장됨
 
 
