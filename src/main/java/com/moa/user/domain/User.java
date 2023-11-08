@@ -26,6 +26,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)  // 기본 생성자의 접근 권한을 protected로 제한
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Table(name = "user")
 public class User extends BaseEntity implements UserDetails {
 
 	@Id
