@@ -85,7 +85,7 @@ public class AuthServiceImpl implements AuthService {
 			.loginId(userSignUpDto.getLoginId())
 			.password(hashedPassword)
 			.name(userSignUpDto.getName())
-			.birthDate(userSignUpDto.getBirthDate())
+			.birthdate(userSignUpDto.getBirthdate())
 			.gender(userSignUpDto.getGender())
 			.phoneNumber(userSignUpDto.getPhoneNumber())
 			.nickname(userSignUpDto.getNickname())

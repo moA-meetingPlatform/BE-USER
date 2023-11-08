@@ -18,7 +18,7 @@ public class UserSignUpDto {
 	private String loginId;
 	private String password;
 	private String name;
-	private LocalDate birthDate;
+	private LocalDate birthdate;
 	private Gender gender;
 	private String phoneNumber;
 	private String nickname;
