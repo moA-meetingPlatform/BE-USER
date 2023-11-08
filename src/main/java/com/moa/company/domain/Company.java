@@ -13,6 +13,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)  // 기본 생성자의 접근 권한을 protected로 제한
+@Table(name = "company")
 public class Company extends BaseEntity {
 
 	@Id
