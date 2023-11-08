@@ -7,6 +7,7 @@ import com.moa.user.domain.User;
 import com.moa.user.domain.UserScore;
 import com.moa.user.dto.CompanyCertificationDto;
 import com.moa.user.dto.UserGetProfileDto;
+import com.moa.user.dto.UserModifyDto;
 import com.moa.user.dto.UserPwDto;
 import com.moa.user.infrastructure.UserRepository;
 import com.moa.user.infrastructure.UserScoreRepository;
@@ -69,9 +70,22 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	@Transactional
-	public void updateCompanyCertification(CompanyCertificationDto companyCertificationDto) {
+	public void modifyCompanyCertification(CompanyCertificationDto companyCertificationDto) {
 		User user = userRepository.findByUserUuid(companyCertificationDto.getUserUuid()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 		user.updateCompanyCertification(companyCertificationDto);
+	}
+
+
+	/**
+	 * 사용자 정보 수정
+	 *
+	 * @param userModifyDto
+	 */
+	@Override
+	@Transactional
+	public void modifyUser(UserModifyDto userModifyDto) {
+		User user = userRepository.findByUserUuid(userModifyDto.getUserUuid()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+		user.updateProfile(userModifyDto);
 	}
 
 }

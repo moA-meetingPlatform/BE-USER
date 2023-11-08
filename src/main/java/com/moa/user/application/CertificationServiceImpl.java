@@ -95,7 +95,7 @@ public class CertificationServiceImpl implements CertificationService {
 		log.debug("emailVerifyCode - companyId: {}", certificationCompanyEmail.getCompanyId());
 
 		// 회사 인증 정보 업데이트
-		userService.updateCompanyCertification(
+		userService.modifyCompanyCertification(
 			new CompanyCertificationDto(certificationCompanyEmailDto.getUserUuid(), certificationCompanyEmail)
 		);
 

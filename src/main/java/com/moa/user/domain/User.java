@@ -3,6 +3,7 @@ package com.moa.user.domain;
 
 import com.moa.global.domain.BaseEntity;
 import com.moa.user.dto.CompanyCertificationDto;
+import com.moa.user.dto.UserModifyDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -98,6 +99,13 @@ public class User extends BaseEntity implements UserDetails {
 		this.companyId = companyCertificationDto.getCompanyId();
 		this.companyCertificationStatus = true;
 		this.companyCertificationDate = LocalDate.now();
+	}
+
+
+	public void updateProfile(UserModifyDto dto) {
+		this.nickname = dto.getNickname();
+		this.userIntroduce = dto.getIntroduce();
+		this.profileImageUrl = dto.getProfileImageUrl();
 	}
 
 

@@ -3,6 +3,7 @@ package com.moa.user.application;
 
 import com.moa.user.dto.CompanyCertificationDto;
 import com.moa.user.dto.UserGetProfileDto;
+import com.moa.user.dto.UserModifyDto;
 import com.moa.user.dto.UserPwDto;
 import org.springframework.security.core.Authentication;
 
@@ -31,6 +32,9 @@ public interface UserService {
 	 */
 	Boolean withdrawal(Authentication authentication);
 
-	void updateCompanyCertification(CompanyCertificationDto companyCertificationDto);
+	void modifyCompanyCertification(CompanyCertificationDto companyCertificationDto);
+
+	// 주어진 UUID의 사용자 정보를 수정합니다.
+	void modifyUser(UserModifyDto userModifyDto);
 
 }

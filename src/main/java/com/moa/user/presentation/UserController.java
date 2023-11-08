@@ -4,6 +4,8 @@ package com.moa.user.presentation;
 import com.moa.global.vo.ApiResult;
 import com.moa.user.application.UserService;
 import com.moa.user.dto.UserGetProfileDto;
+import com.moa.user.dto.UserModifyDto;
+import com.moa.user.vo.request.UserModifyRequest;
 import com.moa.user.vo.response.UserGetProfileResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,10 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -57,6 +56,19 @@ public class UserController {
 	public ResponseEntity<ApiResult<UserGetProfileResponse>> getUserProfile(@RequestParam("UserUuid") UUID userUuid) {
 		UserGetProfileDto dto = userService.getUserProfileByUUID(userUuid);
 		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(dto, UserGetProfileResponse.class)));
+	}
+
+
+	@Operation(summary = "프로필 수정", description = "유저 프로필 수정")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "OK"),
+		@ApiResponse(responseCode = "404", description = "없는 유저", content = @Content(schema = @Schema(implementation = ApiResult.class))),
+		@ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = @Content(schema = @Schema(implementation = ApiResult.class)))
+	})
+	@PatchMapping("/profile")
+	public ResponseEntity<ApiResult<Void>> modifyUserProfile(@RequestBody UserModifyRequest request) {
+		userService.modifyUser(modelMapper.map(request, UserModifyDto.class));
+		return ResponseEntity.ok(ApiResult.ofSuccess(null));
 	}
 
 }

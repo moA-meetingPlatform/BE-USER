@@ -109,12 +109,6 @@ public class AuthServiceImpl implements AuthService {
 
 
 	@Override
-	public void modify(String UUID, UserModifyIn userModifyIn) {
-
-	}
-
-
-	@Override
 	public FindIDOut findID(String userName, String phone) {
 		return null;
 	}
