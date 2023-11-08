@@ -2,6 +2,7 @@ package com.moa.user.dto;
 
 
 import com.moa.user.domain.Gender;
+import com.moa.user.vo.request.AgreeAdvertiseRequest;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -22,6 +23,6 @@ public class UserSignUpDto {
 	private Gender gender;
 	private String phoneNumber;
 	private String nickname;
-	private String introduction;
+	private AgreeAdvertiseRequest agreeAdvertiseRequest;
 
 }

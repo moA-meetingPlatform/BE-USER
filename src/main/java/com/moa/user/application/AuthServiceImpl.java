@@ -89,8 +89,11 @@ public class AuthServiceImpl implements AuthService {
 			.gender(userSignUpDto.getGender())
 			.phoneNumber(userSignUpDto.getPhoneNumber())
 			.nickname(userSignUpDto.getNickname())
+			.emailNotificationStatus(userSignUpDto.getAgreeAdvertiseRequest().isEmailNotificationStatus())
+			.smsNotificationStatus(userSignUpDto.getAgreeAdvertiseRequest().isSmsNotificationStatus())
+			.pushNotificationStatus(userSignUpDto.getAgreeAdvertiseRequest().isPushNotificationStatus())
 			.userSoftDelete(false)
-			.userIntroduce(userSignUpDto.getIntroduction())
+			.companyCertificationStatus(false)
 			.build();
 
 		// user 테이블에 저장

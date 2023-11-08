@@ -113,14 +113,9 @@ public class User extends BaseEntity implements UserDetails {
 	}
 
 
-	/**
-	 * workplaceVerified가 false이면 계정 만료
-	 *
-	 * @return 계정 만료 여부 (true: 만료 안됨, false: 만료됨)
-	 */
 	@Override
 	public boolean isAccountNonExpired() {
-		return this.companyCertificationStatus;
+		return true;
 	}
 
 

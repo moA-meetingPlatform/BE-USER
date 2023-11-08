@@ -36,7 +36,7 @@ public class UserSignUpRequest {
 	@Schema(description = "닉네임", nullable = false, requiredMode = Schema.RequiredMode.REQUIRED, example = "비누")
 	private String nickname;
 
-	@Schema(description = "자기소개", nullable = true, requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "안녕하세요")
-	private String introduction;
+	@Schema(description = "이메일 수신 동의 여부", nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
+	private AgreeAdvertiseRequest agreeAdvertiseRequest;
 
 }
