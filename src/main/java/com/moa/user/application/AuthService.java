@@ -21,9 +21,6 @@ public interface AuthService {
 
 	// --------------------------------------------------------------
 
-	// 주어진 UUID의 사용자 정보를 수정합니다.
-	void modify(String UUID, UserModifyIn userModifyIn);
-
 	// 사용자 이름과 전화번호를 통해 ID를 찾습니다.
 	FindIDOut findID(String userName, String phone);
 
