@@ -45,8 +45,8 @@ public class User extends BaseEntity implements UserDetails {
 	@Column(nullable = false, length = 100, name = "name")
 	private String name;
 
-	@Column(nullable = false, name = "birth_date")
-	private LocalDate birthDate;
+	@Column(nullable = false, name = "birthdate")
+	private LocalDate birthdate;
 
 	@Column(columnDefinition = "tinyint default 1", nullable = false, name = "gender")
 	private Gender gender;

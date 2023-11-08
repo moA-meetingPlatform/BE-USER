@@ -25,7 +25,7 @@ public class UserSignUpRequest {
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Schema(description = "생년월일", nullable = false, requiredMode = Schema.RequiredMode.REQUIRED, example = "2000-01-01")
-	private LocalDate birthDate;
+	private LocalDate birthdate;
 
 	@Schema(description = "성별", nullable = false, requiredMode = Schema.RequiredMode.REQUIRED, example = "WOMAN")
 	private Gender gender;
