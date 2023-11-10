@@ -58,6 +58,7 @@ public class JwtTokenProvider {
 		return Jwts.builder()
 			.setClaims(extractClaims)
 			.setSubject(userDetails.getUsername())
+			.setIssuer("moa-user")
 			.setIssuedAt(new Date(System.currentTimeMillis()))
 			.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 			.signWith(getSigningKey(), SignatureAlgorithm.HS256)
