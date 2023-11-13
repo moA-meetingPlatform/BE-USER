@@ -27,16 +27,16 @@ public class Company extends BaseEntity {
 	private String companyEmail;
 
 	@Column(name = "company_category", nullable = false)
-	private Integer companyCategory;
+	private CompanyCategory companyCategory;
 
 
-	public Company(String companyName, Integer companyCategory) {
+	public Company(String companyName, CompanyCategory companyCategory) {
 		this.companyName = companyName;
 		this.companyCategory = companyCategory;
 	}
 
 
-	public Company(String companyName, String companyEmail, Integer companyCategory) {
+	public Company(String companyName, String companyEmail, CompanyCategory companyCategory) {
 		this.companyName = companyName;
 		this.companyEmail = companyEmail;
 		this.companyCategory = companyCategory;
