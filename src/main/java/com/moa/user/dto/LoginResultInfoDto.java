@@ -1,15 +1,21 @@
-package com.moa.user.vo;
+package com.moa.user.dto;
 
 
 import com.moa.company.domain.CompanyCategory;
 import com.moa.user.domain.Gender;
-import lombok.Getter;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 
+@Builder
 @Getter
-public class LoginResponse {
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+public class LoginResultInfoDto {
 
 	private UUID userUuid;
 	private int birthYear;
@@ -17,5 +23,10 @@ public class LoginResponse {
 	private String nickname;
 	private String token;
 	private CompanyCategory companyCategory;
+
+
+	public void setBirthYearFromBirthdate(LocalDate birthdate) {
+		this.birthYear = birthdate.getYear();
+	}
 
 }

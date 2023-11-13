@@ -1,13 +1,15 @@
 package com.moa.user.application;
 
 
+import com.moa.company.application.CompanyService;
+import com.moa.company.domain.CompanyCategory;
 import com.moa.global.config.exception.CustomException;
 import com.moa.global.config.exception.ErrorCode;
 import com.moa.user.config.security.JwtTokenProvider;
 import com.moa.user.domain.User;
 import com.moa.user.domain.UserScore;
 import com.moa.user.dto.LoginDto;
-import com.moa.user.dto.LoginInfoDto;
+import com.moa.user.dto.LoginResultInfoDto;
 import com.moa.user.dto.UserSignUpDto;
 import com.moa.user.dto.UserSignUpResultDto;
 import com.moa.user.infrastructure.UserRepository;
@@ -41,6 +43,8 @@ public class AuthServiceImpl implements AuthService {
 	private final UserScoreRepository userScoreRepository;
 	private final UserService userService;
 
+	private final CompanyService companyService;
+
 
 	/**
 	 * 로그인
@@ -50,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public LoginInfoDto login(LoginDto loginDto) {
+	public LoginResultInfoDto login(LoginDto loginDto) {
 
 		// loginId로 user 조회
 		User user = userRepository.findByLoginId(loginDto.getLoginId())
@@ -66,9 +70,21 @@ public class AuthServiceImpl implements AuthService {
 
 		// jwt token 생성 후 LoginInfoDto에 담아서 리턴
 		String jwtToken = jwtTokenProvider.generateToken(user);
-		LoginInfoDto loginInfoDto = modelMapper.map(user, LoginInfoDto.class);
-		loginInfoDto.setToken(jwtToken);
-		return loginInfoDto;
+		LoginResultInfoDto loginResultInfoDto = modelMapper.map(user, LoginResultInfoDto.class);
+		loginResultInfoDto.setToken(jwtToken);
+
+		// user의 생년월일로부터 년도 추출
+		loginResultInfoDto.setBirthYearFromBirthdate(user.getBirthdate());
+
+		// user의 회사 id로 회사 카테고리 조회
+		CompanyCategory companyCategory = null;
+		if (user.getCompanyId() == null) {
+			companyCategory = CompanyCategory.SMALL_COMPANY;
+		} else {
+			companyCategory = companyService.getCompanyCategoryById(user.getCompanyId());
+		}
+		loginResultInfoDto.setCompanyCategory(companyCategory);
+		return loginResultInfoDto;
 	}
 
 

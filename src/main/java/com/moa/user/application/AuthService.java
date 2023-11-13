@@ -2,7 +2,7 @@ package com.moa.user.application;
 
 
 import com.moa.user.dto.LoginDto;
-import com.moa.user.dto.LoginInfoDto;
+import com.moa.user.dto.LoginResultInfoDto;
 import com.moa.user.dto.UserSignUpDto;
 import com.moa.user.dto.UserSignUpResultDto;
 import com.moa.user.vo.*;
@@ -14,7 +14,7 @@ import com.moa.user.vo.*;
 //
 public interface AuthService {
 
-	LoginInfoDto login(LoginDto loginDto);
+	LoginResultInfoDto login(LoginDto loginDto);
 
 	// 사용자를 생성하고 생성된 사용자의 ID를 반환합니다.
 	UserSignUpResultDto signUp(UserSignUpDto userSignUpDto);

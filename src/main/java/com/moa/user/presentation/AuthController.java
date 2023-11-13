@@ -4,7 +4,7 @@ package com.moa.user.presentation;
 import com.moa.global.vo.ApiResult;
 import com.moa.user.application.AuthService;
 import com.moa.user.dto.LoginDto;
-import com.moa.user.dto.LoginInfoDto;
+import com.moa.user.dto.LoginResultInfoDto;
 import com.moa.user.dto.UserSignUpDto;
 import com.moa.user.dto.UserSignUpResultDto;
 import com.moa.user.vo.LoginRequest;
@@ -47,8 +47,8 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<ApiResult<LoginResponse>> login(@RequestBody LoginRequest request) {
 		LoginDto loginDto = modelMapper.map(request, LoginDto.class);
-		LoginInfoDto loginInfoDto = authService.login(loginDto);
-		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(loginInfoDto, LoginResponse.class)));
+		LoginResultInfoDto loginResultInfoDto = authService.login(loginDto);
+		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(loginResultInfoDto, LoginResponse.class)));
 	}
 
 
