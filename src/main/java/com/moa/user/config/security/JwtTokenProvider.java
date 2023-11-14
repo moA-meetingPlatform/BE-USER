@@ -66,34 +66,6 @@ public class JwtTokenProvider {
 	}
 
 
-	/**
-	 * 토큰의 유효성만 확인
-	 * todo: 리팩토링 (시큐리티 필터 수정 후 삭제)
-	 */
-	public boolean validateToken(String token) {
-		try {
-			extractAllClaims(token);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-
-	/**
-	 * 토큰의 유효성 확인 및 사용자명 확인
-	 * 토큰의 사용자명과 UserDetails의 사용자명이 일치하고, 토큰이 만료되지 않았는지 확인합니다.
-	 *
-	 * @param token
-	 * @param userDetails
-	 * @return
-	 */
-	public Boolean validateToken(String token, UserDetails userDetails) {
-		final String loginId = getLoginId(token);
-		return (loginId.equals(userDetails.getUsername()) && !isTokenExpired(token));
-	}
-
-
 	// 주어진 JWT 토큰의 만료 시간을 확인합니다.
 	private Boolean isTokenExpired(String token) {
 		return extractExpiration(token).before(new Date());

@@ -18,8 +18,6 @@ import com.moa.user.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,9 +32,6 @@ import java.util.UUID;
 public class AuthServiceImpl implements AuthService {
 
 	private final ModelMapper modelMapper;  // modelMapper 주입
-
-	// security 관련 객체 주입
-	private final AuthenticationManager authenticationManager;
 	private final JwtTokenProvider jwtTokenProvider;
 
 	private final UserRepository userRepository;
@@ -61,12 +56,15 @@ public class AuthServiceImpl implements AuthService {
 			.orElseThrow(() -> new CustomException(ErrorCode.FAIL_LOGIN));
 
 		// password 일치 확인
-		authenticationManager.authenticate(
-			new UsernamePasswordAuthenticationToken(
-				user.getUsername(),
-				loginDto.getPassword()
-			)
-		);
+		//		authenticationManager.authenticate(
+		//			new UsernamePasswordAuthenticationToken(
+		//				user.getUsername(),
+		//				loginDto.getPassword()
+		//			)
+		//		);
+		if (!new BCryptPasswordEncoder().matches(loginDto.getPassword(), user.getPassword())) {
+			throw new CustomException(ErrorCode.FAIL_LOGIN);
+		}
 
 		// jwt token 생성 후 LoginInfoDto에 담아서 리턴
 		String jwtToken = jwtTokenProvider.generateToken(user);
