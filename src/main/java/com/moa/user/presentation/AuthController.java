@@ -8,6 +8,7 @@ import com.moa.user.dto.*;
 import com.moa.user.vo.LoginRequest;
 import com.moa.user.vo.LoginResponse;
 import com.moa.user.vo.request.OauthLoginRequest;
+import com.moa.user.vo.request.OauthSignUpRequest;
 import com.moa.user.vo.request.UserSignUpRequest;
 import com.moa.user.vo.response.UserSignUpResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -73,6 +74,16 @@ public class AuthController {
 		OauthLoginDto oauthLoginDto = modelMapper.map(request, OauthLoginDto.class);
 		LoginResultInfoDto loginResultInfoDto = oauthService.oauthLogin(oauthLoginDto);
 		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(loginResultInfoDto, LoginResponse.class)));
+	}
+
+
+	@Operation(summary = "간편로그인 생성(첫 로그인)", description = "간편로그인 회원가입(첫 로그인시), provider : NAVER, KAKAO, APPLE (대문자 필수)")
+	@PostMapping("/oauth-login-create")
+	public ResponseEntity<ApiResult<UserSignUpResponse>> oauthLoginCreate(@RequestBody OauthSignUpRequest request) {
+		log.debug("INPUT Object Data is : {}", request);
+		OauthSignUpDto oauthSignUpDto = modelMapper.map(request, OauthSignUpDto.class);
+		UserSignUpResultDto loginResultInfoDto = oauthService.createOauthLogin(oauthSignUpDto);
+		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(loginResultInfoDto, UserSignUpResponse.class)));
 	}
 
 }

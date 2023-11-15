@@ -21,7 +21,7 @@ public class OauthLogin extends BaseEntity {
 	private Long id;
 
 	@Convert(converter = OauthProviderTypeConverter.class)
-	@Column(name = "oauth_provider", nullable = false)
+	@Column(columnDefinition = "char(2)", name = "oauth_provider", nullable = false, length = 2)
 	private OauthProviderType oauthProvider;
 
 	@Column(name = "oauth_user_id", nullable = false)
@@ -30,5 +30,12 @@ public class OauthLogin extends BaseEntity {
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
+
+
+	public OauthLogin(OauthProviderType oauthProvider, String oauthUserId, User user) {
+		this.oauthProvider = oauthProvider;
+		this.oauthUserId = oauthUserId;
+		this.user = user;
+	}
 
 }
