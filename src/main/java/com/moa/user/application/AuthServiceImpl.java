@@ -14,7 +14,11 @@ import com.moa.user.dto.UserSignUpDto;
 import com.moa.user.dto.UserSignUpResultDto;
 import com.moa.user.infrastructure.UserRepository;
 import com.moa.user.infrastructure.UserScoreRepository;
-import com.moa.user.vo.*;
+import com.moa.user.vo.AuthenticatePasswordIn;
+import com.moa.user.vo.CheckUserIn;
+import com.moa.user.vo.CheckUserOut;
+import com.moa.user.vo.FindIDOut;
+import com.moa.user.vo.request.OauthLoginRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -28,7 +32,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional(readOnly = true)
 public class AuthServiceImpl implements AuthService {
 
 	private final ModelMapper modelMapper;  // modelMapper 주입
@@ -159,13 +162,7 @@ public class AuthServiceImpl implements AuthService {
 
 
 	@Override
-	public LoginDto findOauth(OauthIn oauthIn) {
-		return null;
-	}
-
-
-	@Override
-	public void createOauth(String token, OauthIn oauthIn) {
+	public void createOauth(String token, OauthLoginRequest oauthLoginRequest) {
 
 	}
 

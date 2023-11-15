@@ -2,6 +2,7 @@ package com.moa.user.domain;
 
 
 import com.moa.global.domain.BaseEntity;
+import com.moa.user.domain.converter.GenderConverter;
 import com.moa.user.dto.CompanyCertificationDto;
 import com.moa.user.dto.UserModifyDto;
 import jakarta.persistence.*;
@@ -49,6 +50,7 @@ public class User extends BaseEntity implements UserDetails {
 	@Column(nullable = false, name = "birthdate")
 	private LocalDate birthdate;
 
+	@Convert(converter = GenderConverter.class)
 	@Column(columnDefinition = "tinyint default 1", nullable = false, name = "gender")
 	private Gender gender;
 

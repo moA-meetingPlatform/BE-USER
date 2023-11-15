@@ -3,12 +3,11 @@ package com.moa.user.presentation;
 
 import com.moa.global.vo.ApiResult;
 import com.moa.user.application.AuthService;
-import com.moa.user.dto.LoginDto;
-import com.moa.user.dto.LoginResultInfoDto;
-import com.moa.user.dto.UserSignUpDto;
-import com.moa.user.dto.UserSignUpResultDto;
+import com.moa.user.application.OauthService;
+import com.moa.user.dto.*;
 import com.moa.user.vo.LoginRequest;
 import com.moa.user.vo.LoginResponse;
+import com.moa.user.vo.request.OauthLoginRequest;
 import com.moa.user.vo.request.UserSignUpRequest;
 import com.moa.user.vo.response.UserSignUpResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,6 +35,7 @@ public class AuthController {
 
 	private final ModelMapper modelMapper;  // modelMapper 주입
 	private final AuthService authService;
+	private final OauthService oauthService;
 
 
 	@Operation(summary = "로그인", description = "유저 일반 로그인")
@@ -63,6 +63,16 @@ public class AuthController {
 		log.debug("userSignUpIn: {}", request);
 		UserSignUpResultDto userSignUpResultDto = authService.signUp(modelMapper.map(request, UserSignUpDto.class));
 		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(userSignUpResultDto, UserSignUpResponse.class)));
+	}
+
+
+	@Operation(summary = "간편로그인", description = "간편로그인, provider : NAVER, KAKAO, APPLE (대문자 필수)")
+	@PostMapping("/oauth-login")
+	public ResponseEntity<ApiResult<LoginResponse>> oauthLogin(@RequestBody OauthLoginRequest request) {
+		log.debug("INPUT Object Data is : {}", request);
+		OauthLoginDto oauthLoginDto = modelMapper.map(request, OauthLoginDto.class);
+		LoginResultInfoDto loginResultInfoDto = oauthService.oauthLogin(oauthLoginDto);
+		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(loginResultInfoDto, LoginResponse.class)));
 	}
 
 }
