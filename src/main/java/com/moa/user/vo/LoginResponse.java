@@ -12,10 +12,11 @@ import java.util.UUID;
 public class LoginResponse {
 
 	private UUID userUuid;
-	private int birthYear;
+	private int age;
 	private Gender gender;
 	private String nickname;
 	private String token;
 	private CompanyCategory companyCategory;
+	private String profileImageUrl;
 
 }

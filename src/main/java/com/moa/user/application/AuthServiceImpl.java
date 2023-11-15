@@ -72,7 +72,7 @@ public class AuthServiceImpl implements AuthService {
 		loginResultInfoDto.setToken(jwtToken);
 
 		// user의 생년월일로부터 년도 추출
-		loginResultInfoDto.setBirthYearFromBirthdate(user.getBirthdate());
+		loginResultInfoDto.setAgeFromBirthdate(user.getBirthdate());
 
 		// user의 회사 id로 회사 카테고리 조회
 		CompanyCategory companyCategory = null;
