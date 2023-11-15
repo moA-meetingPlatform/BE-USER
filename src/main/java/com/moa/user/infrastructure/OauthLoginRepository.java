@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface OauthLoginRepository extends JpaRepository<OauthLogin, Long> {
 
 	Optional<OauthLogin> findByOauthProviderAndOauthUserId(OauthProviderType oauthProviderType, String oauthUserId);
+	boolean existsByOauthProviderAndOauthUserId(OauthProviderType oauthProviderType, String oauthUserId);
 
 }

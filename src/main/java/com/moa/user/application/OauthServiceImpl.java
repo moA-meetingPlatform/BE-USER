@@ -8,12 +8,19 @@ import com.moa.global.config.exception.ErrorCode;
 import com.moa.user.config.security.JwtTokenProvider;
 import com.moa.user.domain.OauthLogin;
 import com.moa.user.domain.User;
+import com.moa.user.domain.UserScore;
 import com.moa.user.dto.LoginResultInfoDto;
 import com.moa.user.dto.OauthLoginDto;
+import com.moa.user.dto.OauthSignUpDto;
+import com.moa.user.dto.UserSignUpResultDto;
 import com.moa.user.infrastructure.OauthLoginRepository;
+import com.moa.user.infrastructure.UserRepository;
+import com.moa.user.infrastructure.UserScoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 
 @Service
@@ -25,6 +32,9 @@ public class OauthServiceImpl implements OauthService {
 
 	private final OauthLoginRepository oauthLoginRepository;
 	private final CompanyService companyService;
+
+	private final UserRepository userRepository;
+	private final UserScoreRepository userScoreRepository;
 
 
 	@Override
@@ -53,6 +63,43 @@ public class OauthServiceImpl implements OauthService {
 		}
 		loginResultInfoDto.setCompanyCategory(companyCategory);
 		return loginResultInfoDto;
+	}
+
+
+	@Override
+	public UserSignUpResultDto createOauthLogin(OauthSignUpDto oauthSignUpDto) {
+		if (oauthLoginRepository.existsByOauthProviderAndOauthUserId(oauthSignUpDto.getOauthProvider(), oauthSignUpDto.getOauthUserId())) {
+			throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
+		}
+
+		UUID uuid = UUID.randomUUID();
+
+		User user = User.builder()
+			.userUuid(uuid)
+			.name(oauthSignUpDto.getName())
+			.birthdate(oauthSignUpDto.getBirthdate())
+			.gender(oauthSignUpDto.getGender())
+			.phoneNumber(oauthSignUpDto.getPhoneNumber())
+			.nickname(oauthSignUpDto.getNickname())
+			.emailNotificationStatus(oauthSignUpDto.getAgreeAdvertiseRequest().isEmailNotificationStatus())
+			.smsNotificationStatus(oauthSignUpDto.getAgreeAdvertiseRequest().isSmsNotificationStatus())
+			.pushNotificationStatus(oauthSignUpDto.getAgreeAdvertiseRequest().isPushNotificationStatus())
+			.userSoftDelete(false)
+			.companyCertificationStatus(false)
+			.build();
+
+		// user 테이블에 저장
+		userRepository.save(user);
+
+		// userScore 테이블에도 저장
+		userScoreRepository.save(new UserScore(user));
+
+		// oauthLogin 테이블에 저장
+		oauthLoginRepository.save(new OauthLogin(oauthSignUpDto.getOauthProvider(), oauthSignUpDto.getOauthUserId(), user));
+
+		return UserSignUpResultDto.builder()
+			.useruuid(uuid)
+			.build();
 	}
 
 }

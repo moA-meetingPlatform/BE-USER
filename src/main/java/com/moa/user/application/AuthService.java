@@ -9,7 +9,6 @@ import com.moa.user.vo.AuthenticatePasswordIn;
 import com.moa.user.vo.CheckUserIn;
 import com.moa.user.vo.CheckUserOut;
 import com.moa.user.vo.FindIDOut;
-import com.moa.user.vo.request.OauthLoginRequest;
 
 
 /**
@@ -43,7 +42,7 @@ public interface AuthService {
 	// 사용자 정보를 확인합니다.
 	CheckUserOut getOtherUserInfo(CheckUserIn checkUserIn);
 
-	// 토큰과 OAuth 정보를 사용하여 OAuth를 생성합니다.
-	void createOauth(String token, OauthLoginRequest oauthLoginRequest);
+	//	// 토큰과 OAuth 정보를 사용하여 OAuth를 생성합니다.
+	//	void createOauth(String token, OauthLoginRequest oauthLoginRequest);
 
 }

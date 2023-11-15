@@ -18,7 +18,6 @@ import com.moa.user.vo.AuthenticatePasswordIn;
 import com.moa.user.vo.CheckUserIn;
 import com.moa.user.vo.CheckUserOut;
 import com.moa.user.vo.FindIDOut;
-import com.moa.user.vo.request.OauthLoginRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -158,12 +157,6 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public CheckUserOut getOtherUserInfo(CheckUserIn checkUserIn) {
 		return null;
-	}
-
-
-	@Override
-	public void createOauth(String token, OauthLoginRequest oauthLoginRequest) {
-
 	}
 
 }

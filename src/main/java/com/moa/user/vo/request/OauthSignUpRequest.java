@@ -3,25 +3,24 @@ package com.moa.user.vo.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.moa.user.domain.Gender;
+import com.moa.user.domain.OauthProviderType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
-import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
 
 @Getter
-@ToString
-public class UserSignUpRequest {
+public class OauthSignUpRequest {
 
-	@Schema(description = "로그인에 사용할 id(이메일형식)", nullable = false, requiredMode = Schema.RequiredMode.REQUIRED, example = "example@moa.com")
-	private String loginId;
+	@Schema(description = "OAuth 제공자", example = "KAKAO")
+	private OauthProviderType oauthProvider;
 
-	@Schema(description = "비밀번호", nullable = false, requiredMode = Schema.RequiredMode.REQUIRED, example = "1234")
-	private String password;
+	@Schema(description = "OAuth 사용자 ID", example = "1234567890")
+	private String oauthUserId;
 
-	@Schema(description = "이름", nullable = false, requiredMode = Schema.RequiredMode.REQUIRED, example = "홍길동")
+	@Schema(description = "이름", example = "김모모")
 	private String name;
 
 	@Schema(description = "생년월일", nullable = false, requiredMode = Schema.RequiredMode.REQUIRED, example = "20000101", pattern = "yyyyMMdd", type = "string")
