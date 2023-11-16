@@ -83,7 +83,7 @@ public class UserController {
 	@Parameters({
 		@Parameter(in = ParameterIn.QUERY, name = "searchWord", description = "검색어", required = true, example = "비누")
 	})
-	@GetMapping("/search")
+	@GetMapping("")
 	public ResponseEntity<ApiResult<List<UserSearchInfoResponse>>> searchUser(@RequestParam("searchWord") String searchWord) {
 		List<UserSearchInfoDto> dtoList = userService.searchUser(searchWord);
 		List<UserSearchInfoResponse> userSearchInfoResponses = dtoList.stream()
