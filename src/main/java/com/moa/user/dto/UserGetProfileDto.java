@@ -26,6 +26,8 @@ public class UserGetProfileDto {
 
 	private Integer userWarningScore;
 
+	private boolean sameWithLoggedInUser;
+
 
 	public void setUserScore(UserScore userScore) {
 		if (userScore == null) {

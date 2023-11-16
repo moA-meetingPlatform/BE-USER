@@ -19,5 +19,6 @@ public class UserGetProfileResponse {
 	private Integer userMannersTemparature;
 
 	private Integer userWarningScore;
+	private boolean sameWithLoggedInUser;
 
 }
