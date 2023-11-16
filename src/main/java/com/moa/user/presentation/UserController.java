@@ -5,8 +5,10 @@ import com.moa.global.vo.ApiResult;
 import com.moa.user.application.UserService;
 import com.moa.user.dto.UserGetProfileDto;
 import com.moa.user.dto.UserModifyDto;
+import com.moa.user.dto.UserSearchInfoDto;
 import com.moa.user.vo.request.UserModifyRequest;
 import com.moa.user.vo.response.UserGetProfileResponse;
+import com.moa.user.vo.response.UserSearchInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -22,6 +24,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -69,6 +72,24 @@ public class UserController {
 	public ResponseEntity<ApiResult<Void>> modifyUserProfile(@RequestBody UserModifyRequest request) {
 		userService.modifyUser(modelMapper.map(request, UserModifyDto.class));
 		return ResponseEntity.ok(ApiResult.ofSuccess(null));
+	}
+
+
+	@Operation(summary = "유저 조회", description = "유저 조회")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "OK"),
+		@ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = @Content(schema = @Schema(implementation = ApiResult.class)))
+	})
+	@Parameters({
+		@Parameter(in = ParameterIn.QUERY, name = "searchWord", description = "검색어", required = true, example = "비누")
+	})
+	@GetMapping("/search")
+	public ResponseEntity<ApiResult<List<UserSearchInfoResponse>>> searchUser(@RequestParam("searchWord") String searchWord) {
+		List<UserSearchInfoDto> dtoList = userService.searchUser(searchWord);
+		List<UserSearchInfoResponse> userSearchInfoResponses = dtoList.stream()
+			.map(dto -> modelMapper.map(dto, UserSearchInfoResponse.class))
+			.toList();
+		return ResponseEntity.ok(ApiResult.ofSuccess(userSearchInfoResponses));
 	}
 
 }

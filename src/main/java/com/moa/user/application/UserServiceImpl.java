@@ -5,10 +5,7 @@ import com.moa.global.config.exception.CustomException;
 import com.moa.global.config.exception.ErrorCode;
 import com.moa.user.domain.User;
 import com.moa.user.domain.UserScore;
-import com.moa.user.dto.CompanyCertificationDto;
-import com.moa.user.dto.UserGetProfileDto;
-import com.moa.user.dto.UserModifyDto;
-import com.moa.user.dto.UserPwDto;
+import com.moa.user.dto.*;
 import com.moa.user.infrastructure.UserRepository;
 import com.moa.user.infrastructure.UserScoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -52,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public void updatePasswordLoginUser(UserPwDto userPwDto, Authentication authentication) {
+	public void updatePasswordLoginUser(UserPwDto userPwDto) {
 
 	}
 
@@ -86,6 +84,13 @@ public class UserServiceImpl implements UserService {
 	public void modifyUser(UserModifyDto userModifyDto) {
 		User user = userRepository.findByUserUuid(userModifyDto.getUserUuid()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 		user.updateProfile(userModifyDto);
+	}
+
+
+	@Override
+	public List<UserSearchInfoDto> searchUser(String nickname) {
+		List<User> userList = userRepository.findTop50ByNicknameContaining(nickname);
+		return userList.stream().map(user -> modelMapper.map(user, UserSearchInfoDto.class)).toList();
 	}
 
 }

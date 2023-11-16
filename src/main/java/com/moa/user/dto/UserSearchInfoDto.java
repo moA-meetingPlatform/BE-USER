@@ -11,7 +11,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserSimpleInfoDto {
+public class UserSearchInfoDto {
 
 	private UUID userUuid;
 	private String nickname;
