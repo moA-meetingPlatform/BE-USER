@@ -32,7 +32,7 @@ public class JwtTokenProvider {
 
 
 	// 주어진 JWT 토큰에서 사용자명 (UUID)을 추출합니다.
-	public String getLoginId(String token) {
+	public String getUuidString(String token) {
 		return extractClaim(token, Claims::getSubject);
 	}
 
