@@ -109,7 +109,8 @@ public class AuthServiceImpl implements AuthService {
 			.smsNotificationStatus(userSignUpDto.getAgreeAdvertiseRequest().isSmsNotificationStatus())
 			.pushNotificationStatus(userSignUpDto.getAgreeAdvertiseRequest().isPushNotificationStatus())
 			.userSoftDelete(false)
-			.companyCertificationStatus(false)
+			.companyId(userSignUpDto.getSignUpVerifyCompanyEmailRequest().getCompanyId())
+			.companyCertificationStatus(true)
 			.build();
 
 		// user 테이블에 저장

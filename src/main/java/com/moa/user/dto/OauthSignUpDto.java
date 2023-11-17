@@ -28,4 +28,8 @@ public class OauthSignUpDto {
 
 	private AgreeAdvertiseRequest agreeAdvertiseRequest;
 
+	private SignUpVerifyCompanyEmailDto signUpVerifyCompanyEmailRequest;
+
+	private SignUpVerifyCompanyCertificateDto signUpVerifyCompanyCertificateRequest;
+
 }

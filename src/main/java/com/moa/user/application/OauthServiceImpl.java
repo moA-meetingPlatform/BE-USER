@@ -86,6 +86,7 @@ public class OauthServiceImpl implements OauthService {
 			.pushNotificationStatus(oauthSignUpDto.getAgreeAdvertiseRequest().isPushNotificationStatus())
 			.userSoftDelete(false)
 			.companyCertificationStatus(false)
+			.companyId(oauthSignUpDto.getSignUpVerifyCompanyEmailRequest().getCompanyId())
 			.build();
 
 		// user 테이블에 저장

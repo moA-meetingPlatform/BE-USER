@@ -5,14 +5,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.moa.user.domain.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
-import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
 
 @Getter
-@ToString
 public class UserSignUpRequest {
 
 	@Schema(description = "로그인에 사용할 id(이메일형식)", nullable = false, requiredMode = Schema.RequiredMode.REQUIRED, example = "example@moa.com")
@@ -40,5 +38,11 @@ public class UserSignUpRequest {
 
 	@Schema(description = "이메일 수신 동의 여부", nullable = false, requiredMode = Schema.RequiredMode.REQUIRED)
 	private AgreeAdvertiseRequest agreeAdvertiseRequest;
+
+	@Schema(description = "회사 이메일 인증 정보", nullable = true, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+	private SignUpVerifyCompanyEmailRequest signUpVerifyCompanyEmailRequest;
+
+	@Schema(description = "회사 증명서(재직증명서) 인증 정보", nullable = true, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+	private SignUpVerifyCompanyCertificateRequest signUpVerifyCompanyCertificateRequest;
 
 }
