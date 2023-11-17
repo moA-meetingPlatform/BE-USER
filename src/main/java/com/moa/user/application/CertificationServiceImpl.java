@@ -2,11 +2,12 @@ package com.moa.user.application;
 
 
 import com.moa.company.application.CompanyService;
+import com.moa.company.dto.CompanySimpleInfoDto;
 import com.moa.global.config.exception.CustomException;
 import com.moa.global.config.exception.ErrorCode;
 import com.moa.user.domain.redis.CertificationCompanyEmail;
-import com.moa.user.dto.CertificationCompanyEmailDto;
 import com.moa.user.dto.CompanyCertificationDto;
+import com.moa.user.dto.ConfirmCompanyEmailDto;
 import com.moa.user.infrastructure.redis.CompanyEmailCertificateRedisRepository;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
@@ -69,12 +70,12 @@ public class CertificationServiceImpl implements CertificationService {
 				.build()
 		);
 
-		/* 인증코드를 포함한 이메일 전송 */
-		try {
-			sendCodeEmail(email, code);
-		} catch (MessagingException e) {
-			throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
-		}
+		//		/* 인증코드를 포함한 이메일 전송 */
+		//		try {
+		//			sendCodeEmail(email, code);
+		//		} catch (MessagingException e) {
+		//			throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+		//		}
 	}
 
 
@@ -82,26 +83,33 @@ public class CertificationServiceImpl implements CertificationService {
 	 * 이메일 인증번호 확인
 	 * - redis에 저장된 인증정보와 인증번호 비교
 	 *
-	 * @param certificationCompanyEmailDto 이메일, 인증 코드
+	 * @param confirmCompanyEmailDto 이메일, 인증 코드
 	 */
-	public void confirmEmailAndCertificationCompany(CertificationCompanyEmailDto certificationCompanyEmailDto) {
-		String code = certificationCompanyEmailDto.getCode();
+	public CompanySimpleInfoDto confirmEmailAndUpdateCertificationCompany(ConfirmCompanyEmailDto confirmCompanyEmailDto) {
+		String code = confirmCompanyEmailDto.getCode();
 
 		// redis에 저장된 인증정보 확인 (인증번호를 전송한 회사 이메일을 ID로 인증번호, 회사id 조회)
-		CertificationCompanyEmail certificationCompanyEmail = companyEmailCertificateRedisRepository.findById(certificationCompanyEmailDto.getCompanyEmail())
+		CertificationCompanyEmail certificationCompanyEmail = companyEmailCertificateRedisRepository.findById(confirmCompanyEmailDto.getCompanyEmail())
 			.orElseThrow(() -> new CustomException(ErrorCode.INVALID_CERT_CODE));   // 인증번호가 만료되었거나 존재하지 않는 경우
 		if (!certificationCompanyEmail.getCode().equals(code)) throw new CustomException(ErrorCode.INVALID_CERT_CODE);  // 인증번호가 일치하지 않는 경우
 
 		log.debug("emailVerifyCode - companyId: {}", certificationCompanyEmail.getCompanyId());
+		log.debug("emailVerifyCode - code: {}", certificationCompanyEmail.getCode());
+		log.debug("emailVerifyCode - uuid: {}", confirmCompanyEmailDto.getUserUuid());
 
-		// 회사 인증 정보 업데이트
-		userService.modifyCompanyCertification(
-			new CompanyCertificationDto(certificationCompanyEmailDto.getUserUuid(), certificationCompanyEmail)
-		);
+		if (confirmCompanyEmailDto.getUserUuid() != null) {
+			log.info("회사 인증 완료");
+			// 회사 인증 정보 업데이트
+			userService.modifyCompanyCertification(
+				new CompanyCertificationDto(confirmCompanyEmailDto.getUserUuid(), certificationCompanyEmail)
+			);
+		}
 
 		// 확인 후 redis에 저장된 인증정보 삭제
 		companyEmailCertificateRedisRepository.delete(certificationCompanyEmail);
 
+		// 회사 정보 조회
+		return companyService.getCompanySimpleInfoById(certificationCompanyEmail.getCompanyId());
 	}
 
 
