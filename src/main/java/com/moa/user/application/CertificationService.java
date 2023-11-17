@@ -1,7 +1,8 @@
 package com.moa.user.application;
 
 
-import com.moa.user.dto.CertificationCompanyEmailDto;
+import com.moa.company.dto.CompanySimpleInfoDto;
+import com.moa.user.dto.ConfirmCompanyEmailDto;
 
 
 /**
@@ -22,6 +23,6 @@ public interface CertificationService {
 	 *
 	 * @param dto 이메일, 인증 코드
 	 */
-	void confirmEmailAndCertificationCompany(CertificationCompanyEmailDto dto);
+	CompanySimpleInfoDto confirmEmailAndUpdateCertificationCompany(ConfirmCompanyEmailDto dto);
 
 }

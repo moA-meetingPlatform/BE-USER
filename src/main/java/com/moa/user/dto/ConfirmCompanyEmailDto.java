@@ -7,10 +7,15 @@ import java.util.UUID;
 
 
 @Getter
-public class CertificationCompanyEmailDto {
+public class ConfirmCompanyEmailDto {
 
 	private UUID userUuid;
 	private String companyEmail;
 	private String code;
+
+
+	public void setUserUuid(UUID userUuid) {
+		this.userUuid = userUuid;
+	}
 
 }

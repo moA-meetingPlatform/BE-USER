@@ -3,11 +3,13 @@ package com.moa.company.application;
 
 import com.moa.company.domain.Company;
 import com.moa.company.domain.CompanyCategory;
+import com.moa.company.dto.CompanySimpleInfoDto;
 import com.moa.company.infrastructure.CompanyRepository;
 import com.moa.global.config.exception.CustomException;
 import com.moa.global.config.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class CompanyServiceImpl implements CompanyService {
+
+	private final ModelMapper modelMapper;
 
 	private final CompanyRepository companyRepository;
 
@@ -42,6 +46,15 @@ public class CompanyServiceImpl implements CompanyService {
 	public Integer getCompanyIdByCompanyEmail(String companyEmailDomain) {
 		Company company = companyRepository.findByCompanyEmail(companyEmailDomain).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
 		return company.getId();
+	}
+
+
+	@Override
+	public CompanySimpleInfoDto getCompanySimpleInfoById(int companyId) {
+		return modelMapper.map(
+			companyRepository.findById(companyId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE)),
+			CompanySimpleInfoDto.class
+		);
 	}
 
 }

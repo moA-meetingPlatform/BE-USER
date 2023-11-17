@@ -2,6 +2,7 @@ package com.moa.company.application;
 
 
 import com.moa.company.domain.CompanyCategory;
+import com.moa.company.dto.CompanySimpleInfoDto;
 import com.moa.global.config.exception.CustomException;
 
 
@@ -24,5 +25,7 @@ public interface CompanyService {
 	 * @throws CustomException
 	 */
 	Integer getCompanyIdByCompanyEmail(String emailDomain) throws CustomException;
+
+	CompanySimpleInfoDto getCompanySimpleInfoById(int companyId) throws CustomException;
 
 }
