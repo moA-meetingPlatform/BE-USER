@@ -1,6 +1,8 @@
 package com.moa.user.application;
 
 
+import com.moa.certificate.application.UserCompanyCertificateService;
+import com.moa.certificate.dto.CreateUserCompanyCertificateDto;
 import com.moa.company.application.CompanyService;
 import com.moa.company.domain.CompanyCategory;
 import com.moa.global.config.exception.CustomException;
@@ -41,6 +43,8 @@ public class AuthServiceImpl implements AuthService {
 	private final UserService userService;
 
 	private final CompanyService companyService;
+
+	private final UserCompanyCertificateService userCompanyCertificateService;
 
 
 	/**
@@ -109,7 +113,7 @@ public class AuthServiceImpl implements AuthService {
 			.smsNotificationStatus(userSignUpDto.getAgreeAdvertiseRequest().isSmsNotificationStatus())
 			.pushNotificationStatus(userSignUpDto.getAgreeAdvertiseRequest().isPushNotificationStatus())
 			.userSoftDelete(false)
-			.companyId(userSignUpDto.getSignUpVerifyCompanyEmailRequest().getCompanyId())
+			.companyId(userSignUpDto.getSignUpVerifyCompanyEmailDto().getCompanyId())
 			.companyCertificationStatus(true)
 			.build();
 
@@ -118,6 +122,46 @@ public class AuthServiceImpl implements AuthService {
 
 		// userScore 테이블에도 저장
 		userScoreRepository.save(new UserScore(user));
+
+		return UserSignUpResultDto.builder()
+			.useruuid(uuid)
+			.build();
+	}
+
+
+	@Override
+	@Transactional
+	public UserSignUpResultDto signUpCertificate(UserSignUpDto userSignUpDto) {
+		userService.checkCanUseLoginId(userSignUpDto.getLoginId());
+
+		UUID uuid = UUID.randomUUID();
+		String hashedPassword = new BCryptPasswordEncoder().encode(userSignUpDto.getPassword());
+
+		User user = User.builder()
+			.userUuid(uuid)
+			.loginId(userSignUpDto.getLoginId())
+			.password(hashedPassword)
+			.name(userSignUpDto.getName())
+			.birthdate(userSignUpDto.getBirthdate())
+			.gender(userSignUpDto.getGender())
+			.phoneNumber(userSignUpDto.getPhoneNumber())
+			.nickname(userSignUpDto.getNickname())
+			.emailNotificationStatus(userSignUpDto.getAgreeAdvertiseRequest().isEmailNotificationStatus())
+			.smsNotificationStatus(userSignUpDto.getAgreeAdvertiseRequest().isSmsNotificationStatus())
+			.pushNotificationStatus(userSignUpDto.getAgreeAdvertiseRequest().isPushNotificationStatus())
+			.userSoftDelete(false)
+			.companyCertificationStatus(false)
+			.build();
+
+		// user 테이블에 저장
+		user = userRepository.save(user);
+
+		// userScore 테이블에도 저장
+		userScoreRepository.save(new UserScore(user));
+
+		CreateUserCompanyCertificateDto createUserCompanyCertificateDto = userSignUpDto.getCreateUserCompanyCertificateDto();
+		createUserCompanyCertificateDto.setUserId(user.getId());
+		userCompanyCertificateService.createUserCompanyCertificate(userSignUpDto.getCreateUserCompanyCertificateDto());
 
 		return UserSignUpResultDto.builder()
 			.useruuid(uuid)

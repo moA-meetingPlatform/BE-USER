@@ -25,7 +25,7 @@ public class UserScore {
 	private Integer reviewerCount;
 
 	@Column(name = "user_manners_temparature")
-	private Integer userMannersTemparature;
+	private Double userMannersTemparature;
 
 	@Column(name = "user_warning_score")
 	private Integer userWarningScore;
@@ -34,7 +34,7 @@ public class UserScore {
 	public UserScore(User user) {
 		this.user = user;
 		this.reviewerCount = 0;
-		this.userMannersTemparature = 0;
+		this.userMannersTemparature = 36.5;
 		this.userWarningScore = 0;
 	}
 

@@ -1,10 +1,9 @@
 package com.moa.user.dto;
 
 
+import com.moa.certificate.dto.CreateUserCompanyCertificateDto;
 import com.moa.user.domain.Gender;
 import com.moa.user.vo.request.AgreeAdvertiseRequest;
-import com.moa.user.vo.request.SignUpVerifyCompanyCertificateRequest;
-import com.moa.user.vo.request.SignUpVerifyCompanyEmailRequest;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -25,7 +24,17 @@ public class UserSignUpDto {
 	private String phoneNumber;
 	private String nickname;
 	private AgreeAdvertiseRequest agreeAdvertiseRequest;
-	private SignUpVerifyCompanyEmailRequest signUpVerifyCompanyEmailRequest;
-	private SignUpVerifyCompanyCertificateRequest signUpVerifyCompanyCertificateRequest;
+	private SignUpVerifyCompanyEmailDto signUpVerifyCompanyEmailDto;
+	private CreateUserCompanyCertificateDto createUserCompanyCertificateDto;
+
+
+	public void setSignUpVerifyCompanyEmailDto(SignUpVerifyCompanyEmailDto signUpVerifyCompanyEmailDto) {
+		this.signUpVerifyCompanyEmailDto = signUpVerifyCompanyEmailDto;
+	}
+
+
+	public void setCreateUserCompanyCertificateDto(CreateUserCompanyCertificateDto createUserCompanyCertificateDto) {
+		this.createUserCompanyCertificateDto = createUserCompanyCertificateDto;
+	}
 
 }

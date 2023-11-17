@@ -18,12 +18,19 @@ public interface OauthService {
 	LoginResultInfoDto oauthLogin(OauthLoginDto oauthLoginDto);
 
 	/**
-	 * OAuth 회원가입
-	 * 외부 로그인 정보로 회원가입을 진행합니다.
+	 * OAuth 회원가입 및 이메일로 회사 인증
 	 *
 	 * @param oauthSignUpDto
 	 * @return UserSignUpResultDto 회원가입 결과 정보
 	 */
 	UserSignUpResultDto createOauthLogin(OauthSignUpDto oauthSignUpDto);
+
+	/**
+	 * OAuth 회원가입 및 재직증명서로 회사 인증
+	 *
+	 * @param oauthSignUpDto
+	 * @return
+	 */
+	UserSignUpResultDto createOauthLoginCertificate(OauthSignUpDto oauthSignUpDto);
 
 }

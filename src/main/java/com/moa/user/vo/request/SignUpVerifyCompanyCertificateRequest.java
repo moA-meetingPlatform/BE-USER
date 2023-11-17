@@ -6,6 +6,8 @@ import lombok.Getter;
 
 @Getter
 public class SignUpVerifyCompanyCertificateRequest {
-	private Integer companyName;
+
+	private String companyName;
 	private String certificateImageUrl;
+
 }

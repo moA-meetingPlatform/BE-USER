@@ -1,6 +1,7 @@
 package com.moa.user.presentation;
 
 
+import com.moa.certificate.dto.CreateUserCompanyCertificateDto;
 import com.moa.global.vo.ApiResult;
 import com.moa.user.application.AuthService;
 import com.moa.user.application.OauthService;
@@ -61,8 +62,26 @@ public class AuthController {
 	})
 	@PostMapping("/signup")
 	public ResponseEntity<ApiResult<UserSignUpResponse>> signUp(@RequestBody UserSignUpRequest request) {
-		log.debug("userSignUpIn: {}", request);
-		UserSignUpResultDto userSignUpResultDto = authService.signUp(modelMapper.map(request, UserSignUpDto.class));
+		UserSignUpDto userSignUpDto = modelMapper.map(request, UserSignUpDto.class);
+		userSignUpDto.setSignUpVerifyCompanyEmailDto(modelMapper.map(request.getVerifyCompanyEmailRequest(), SignUpVerifyCompanyEmailDto.class));
+
+		UserSignUpResultDto userSignUpResultDto = authService.signUp(userSignUpDto);
+		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(userSignUpResultDto, UserSignUpResponse.class)));
+	}
+
+
+	@Operation(summary = "회원가입 - 재직증명서 ", description = "유저 회원가입")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "OK"),
+		@ApiResponse(responseCode = "409", description = "유저 아이디 중복"),
+		@ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+	})
+	@PostMapping("/signup/certificate")
+	public ResponseEntity<ApiResult<UserSignUpResponse>> signUpCertificate(@RequestBody UserSignUpRequest request) {
+		UserSignUpDto userSignUpDto = modelMapper.map(request, UserSignUpDto.class);
+		userSignUpDto.setCreateUserCompanyCertificateDto(modelMapper.map(request.getVerifyCompanyCertificateRequest(), CreateUserCompanyCertificateDto.class));
+
+		UserSignUpResultDto userSignUpResultDto = authService.signUpCertificate(userSignUpDto);
 		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(userSignUpResultDto, UserSignUpResponse.class)));
 	}
 
@@ -82,7 +101,21 @@ public class AuthController {
 	public ResponseEntity<ApiResult<UserSignUpResponse>> oauthLoginCreate(@RequestBody OauthSignUpRequest request) {
 		log.debug("INPUT Object Data is : {}", request);
 		OauthSignUpDto oauthSignUpDto = modelMapper.map(request, OauthSignUpDto.class);
+		oauthSignUpDto.setSignUpVerifyCompanyEmailDto(modelMapper.map(request.getVerifyCompanyEmailRequest(), SignUpVerifyCompanyEmailDto.class));
+
 		UserSignUpResultDto loginResultInfoDto = oauthService.createOauthLogin(oauthSignUpDto);
+		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(loginResultInfoDto, UserSignUpResponse.class)));
+	}
+
+
+	@Operation(summary = "간편로그인 생성(첫 로그인) - 재직증명서", description = "간편로그인 회원가입(첫 로그인시), provider : NAVER, KAKAO, APPLE (대문자 필수)")
+	@PostMapping("/oauth-login-create/certificate")
+	public ResponseEntity<ApiResult<UserSignUpResponse>> oauthLoginCreateCertificate(@RequestBody OauthSignUpRequest request) {
+		log.debug("INPUT Object Data is : {}", request);
+		OauthSignUpDto oauthSignUpDto = modelMapper.map(request, OauthSignUpDto.class);
+		oauthSignUpDto.setCreateUserCompanyCertificateDto(modelMapper.map(request.getVerifyCompanyCertificateRequest(), CreateUserCompanyCertificateDto.class));
+
+		UserSignUpResultDto loginResultInfoDto = oauthService.createOauthLoginCertificate(oauthSignUpDto);
 		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(loginResultInfoDto, UserSignUpResponse.class)));
 	}
 
