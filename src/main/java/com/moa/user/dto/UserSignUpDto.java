@@ -3,12 +3,13 @@ package com.moa.user.dto;
 
 import com.moa.user.domain.Gender;
 import com.moa.user.vo.request.AgreeAdvertiseRequest;
+import com.moa.user.vo.request.SignUpVerifyCompanyCertificateRequest;
+import com.moa.user.vo.request.SignUpVerifyCompanyEmailRequest;
 import lombok.*;
 
 import java.time.LocalDate;
 
 
-@ToString
 @Builder
 @Getter
 @Setter
@@ -24,5 +25,7 @@ public class UserSignUpDto {
 	private String phoneNumber;
 	private String nickname;
 	private AgreeAdvertiseRequest agreeAdvertiseRequest;
+	private SignUpVerifyCompanyEmailRequest signUpVerifyCompanyEmailRequest;
+	private SignUpVerifyCompanyCertificateRequest signUpVerifyCompanyCertificateRequest;
 
 }
