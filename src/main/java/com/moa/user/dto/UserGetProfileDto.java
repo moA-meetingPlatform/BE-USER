@@ -22,7 +22,7 @@ public class UserGetProfileDto {
 
 	private Integer reviewerCount;
 
-	private Integer userMannersTemparature;
+	private Double userMannersTemparature;
 
 	private Integer userWarningScore;
 
@@ -32,7 +32,7 @@ public class UserGetProfileDto {
 	public void setUserScore(UserScore userScore) {
 		if (userScore == null) {
 			this.reviewerCount = 0;
-			this.userMannersTemparature = 0;
+			this.userMannersTemparature = 36.5;
 			this.userWarningScore = 0;
 		} else {
 			this.reviewerCount = userScore.getReviewerCount();

@@ -1,6 +1,8 @@
 package com.moa.user.application;
 
 
+import com.moa.certificate.application.UserCompanyCertificateService;
+import com.moa.certificate.dto.CreateUserCompanyCertificateDto;
 import com.moa.company.application.CompanyService;
 import com.moa.company.domain.CompanyCategory;
 import com.moa.global.config.exception.CustomException;
@@ -32,6 +34,7 @@ public class OauthServiceImpl implements OauthService {
 
 	private final OauthLoginRepository oauthLoginRepository;
 	private final CompanyService companyService;
+	private final UserCompanyCertificateService userCompanyCertificateService;
 
 	private final UserRepository userRepository;
 	private final UserScoreRepository userScoreRepository;
@@ -85,8 +88,8 @@ public class OauthServiceImpl implements OauthService {
 			.smsNotificationStatus(oauthSignUpDto.getAgreeAdvertiseRequest().isSmsNotificationStatus())
 			.pushNotificationStatus(oauthSignUpDto.getAgreeAdvertiseRequest().isPushNotificationStatus())
 			.userSoftDelete(false)
-			.companyCertificationStatus(false)
-			.companyId(oauthSignUpDto.getSignUpVerifyCompanyEmailRequest().getCompanyId())
+			.companyCertificationStatus(true)
+			.companyId(oauthSignUpDto.getSignUpVerifyCompanyEmailDto().getCompanyId())
 			.build();
 
 		// user 테이블에 저장
@@ -97,6 +100,47 @@ public class OauthServiceImpl implements OauthService {
 
 		// oauthLogin 테이블에 저장
 		oauthLoginRepository.save(new OauthLogin(oauthSignUpDto.getOauthProvider(), oauthSignUpDto.getOauthUserId(), user));
+
+		return UserSignUpResultDto.builder()
+			.useruuid(uuid)
+			.build();
+	}
+
+
+	//	@Override
+	public UserSignUpResultDto createOauthLoginCertificate(OauthSignUpDto oauthSignUpDto) {
+		if (oauthLoginRepository.existsByOauthProviderAndOauthUserId(oauthSignUpDto.getOauthProvider(), oauthSignUpDto.getOauthUserId())) {
+			throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
+		}
+
+		UUID uuid = UUID.randomUUID();
+
+		User user = User.builder()
+			.userUuid(uuid)
+			.name(oauthSignUpDto.getName())
+			.birthdate(oauthSignUpDto.getBirthdate())
+			.gender(oauthSignUpDto.getGender())
+			.phoneNumber(oauthSignUpDto.getPhoneNumber())
+			.nickname(oauthSignUpDto.getNickname())
+			.emailNotificationStatus(oauthSignUpDto.getAgreeAdvertiseRequest().isEmailNotificationStatus())
+			.smsNotificationStatus(oauthSignUpDto.getAgreeAdvertiseRequest().isSmsNotificationStatus())
+			.pushNotificationStatus(oauthSignUpDto.getAgreeAdvertiseRequest().isPushNotificationStatus())
+			.userSoftDelete(false)
+			.companyCertificationStatus(false)
+			.build();
+
+		// user 테이블에 저장
+		userRepository.save(user);
+
+		// userScore 테이블에도 저장
+		userScoreRepository.save(new UserScore(user));
+
+		// oauthLogin 테이블에 저장
+		oauthLoginRepository.save(new OauthLogin(oauthSignUpDto.getOauthProvider(), oauthSignUpDto.getOauthUserId(), user));
+
+		CreateUserCompanyCertificateDto createUserCompanyCertificateDto = oauthSignUpDto.getCreateUserCompanyCertificateDto();
+		createUserCompanyCertificateDto.setUserId(user.getId());
+		userCompanyCertificateService.createUserCompanyCertificate(oauthSignUpDto.getCreateUserCompanyCertificateDto());
 
 		return UserSignUpResultDto.builder()
 			.useruuid(uuid)

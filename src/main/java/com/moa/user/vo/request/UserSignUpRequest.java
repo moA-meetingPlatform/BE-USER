@@ -40,9 +40,9 @@ public class UserSignUpRequest {
 	private AgreeAdvertiseRequest agreeAdvertiseRequest;
 
 	@Schema(description = "회사 이메일 인증 정보", nullable = true, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-	private SignUpVerifyCompanyEmailRequest signUpVerifyCompanyEmailRequest;
+	private SignUpVerifyCompanyEmailRequest verifyCompanyEmailRequest;
 
 	@Schema(description = "회사 증명서(재직증명서) 인증 정보", nullable = true, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-	private SignUpVerifyCompanyCertificateRequest signUpVerifyCompanyCertificateRequest;
+	private SignUpVerifyCompanyCertificateRequest verifyCompanyCertificateRequest;
 
 }

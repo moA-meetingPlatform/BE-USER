@@ -22,6 +22,8 @@ public interface AuthService {
 	// 사용자를 생성하고 생성된 사용자의 ID를 반환합니다.
 	UserSignUpResultDto signUp(UserSignUpDto userSignUpDto);
 
+	UserSignUpResultDto signUpCertificate(UserSignUpDto userSignUpDto);
+
 	// --------------------------------------------------------------
 
 	// 사용자 이름과 전화번호를 통해 ID를 찾습니다.
