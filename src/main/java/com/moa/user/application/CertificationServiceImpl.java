@@ -70,12 +70,12 @@ public class CertificationServiceImpl implements CertificationService {
 				.build()
 		);
 
-		//		/* 인증코드를 포함한 이메일 전송 */
-		//		try {
-		//			sendCodeEmail(email, code);
-		//		} catch (MessagingException e) {
-		//			throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
-		//		}
+		/* 인증코드를 포함한 이메일 전송 */
+		try {
+			sendCodeEmail(email, code);
+		} catch (MessagingException e) {
+			throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 
