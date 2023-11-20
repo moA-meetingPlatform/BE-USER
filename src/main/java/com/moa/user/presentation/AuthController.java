@@ -66,7 +66,7 @@ public class AuthController {
 
 		UserSignUpDto userSignUpDto = modelMapper.map(request, UserSignUpDto.class);
 
-		if (request.getVerifyCompanyEmailRequest() != null && request.getVerifyCompanyEmailRequest().getCompanyId() != null) {
+		if (request.getVerifyCompanyEmailRequest() != null && request.getVerifyCompanyEmailRequest().getCompanyEmail() != null) {
 			log.debug("회사 이메일 인증");
 			userSignUpDto.setSignUpVerifyCompanyEmailDto(modelMapper.map(request.getVerifyCompanyEmailRequest(), SignUpVerifyCompanyEmailDto.class));
 			userSignUpResultDto = authService.signUp(userSignUpDto);
@@ -94,23 +94,22 @@ public class AuthController {
 	@PostMapping("/oauth-login-create")
 	public ResponseEntity<ApiResult<UserSignUpResponse>> oauthLoginCreate(@RequestBody OauthSignUpRequest request) {
 		log.debug("INPUT Object Data is : {}", request);
+
+		UserSignUpResultDto userSignUpResultDto;
+
 		OauthSignUpDto oauthSignUpDto = modelMapper.map(request, OauthSignUpDto.class);
-		oauthSignUpDto.setSignUpVerifyCompanyEmailDto(modelMapper.map(request.getVerifyCompanyEmailRequest(), SignUpVerifyCompanyEmailDto.class));
 
-		UserSignUpResultDto loginResultInfoDto = oauthService.createOauthLogin(oauthSignUpDto);
-		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(loginResultInfoDto, UserSignUpResponse.class)));
-	}
+		if (request.getVerifyCompanyEmailRequest() != null && request.getVerifyCompanyEmailRequest().getCompanyEmail() != null) {
+			log.debug("회사 이메일 인증");
+			oauthSignUpDto.setSignUpVerifyCompanyEmailDto(modelMapper.map(request.getVerifyCompanyEmailRequest(), SignUpVerifyCompanyEmailDto.class));
+			userSignUpResultDto = oauthService.createOauthLogin(oauthSignUpDto);
+		} else {
+			log.debug("회사 증명서 인증");
+			oauthSignUpDto.setCreateUserCompanyCertificateDto(modelMapper.map(request.getVerifyCompanyCertificateRequest(), CreateUserCompanyCertificateDto.class));
+			userSignUpResultDto = oauthService.createOauthLoginCertificate(oauthSignUpDto);
+		}
 
-
-	@Operation(summary = "간편로그인 생성(첫 로그인) - 재직증명서", description = "간편로그인 회원가입(첫 로그인시), provider : NAVER, KAKAO, APPLE (대문자 필수)")
-	@PostMapping("/oauth-login-create/certificate")
-	public ResponseEntity<ApiResult<UserSignUpResponse>> oauthLoginCreateCertificate(@RequestBody OauthSignUpRequest request) {
-		log.debug("INPUT Object Data is : {}", request);
-		OauthSignUpDto oauthSignUpDto = modelMapper.map(request, OauthSignUpDto.class);
-		oauthSignUpDto.setCreateUserCompanyCertificateDto(modelMapper.map(request.getVerifyCompanyCertificateRequest(), CreateUserCompanyCertificateDto.class));
-
-		UserSignUpResultDto loginResultInfoDto = oauthService.createOauthLoginCertificate(oauthSignUpDto);
-		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(loginResultInfoDto, UserSignUpResponse.class)));
+		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(userSignUpResultDto, UserSignUpResponse.class)));
 	}
 
 }
