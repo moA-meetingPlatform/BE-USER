@@ -62,26 +62,20 @@ public class AuthController {
 	})
 	@PostMapping("/signup")
 	public ResponseEntity<ApiResult<UserSignUpResponse>> signUp(@RequestBody UserSignUpRequest request) {
+		UserSignUpResultDto userSignUpResultDto;
+
 		UserSignUpDto userSignUpDto = modelMapper.map(request, UserSignUpDto.class);
-		userSignUpDto.setSignUpVerifyCompanyEmailDto(modelMapper.map(request.getVerifyCompanyEmailRequest(), SignUpVerifyCompanyEmailDto.class));
 
-		UserSignUpResultDto userSignUpResultDto = authService.signUp(userSignUpDto);
-		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(userSignUpResultDto, UserSignUpResponse.class)));
-	}
+		if (request.getVerifyCompanyEmailRequest() != null && request.getVerifyCompanyEmailRequest().getCompanyId() != null) {
+			log.debug("회사 이메일 인증");
+			userSignUpDto.setSignUpVerifyCompanyEmailDto(modelMapper.map(request.getVerifyCompanyEmailRequest(), SignUpVerifyCompanyEmailDto.class));
+			userSignUpResultDto = authService.signUp(userSignUpDto);
+		} else {
+			log.debug("회사 증명서 인증");
+			userSignUpDto.setCreateUserCompanyCertificateDto(modelMapper.map(request.getVerifyCompanyCertificateRequest(), CreateUserCompanyCertificateDto.class));
+			userSignUpResultDto = authService.signUpCertificate(userSignUpDto);
+		}
 
-
-	@Operation(summary = "회원가입 - 재직증명서 ", description = "유저 회원가입")
-	@ApiResponses({
-		@ApiResponse(responseCode = "200", description = "OK"),
-		@ApiResponse(responseCode = "409", description = "유저 아이디 중복"),
-		@ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
-	})
-	@PostMapping("/signup/certificate")
-	public ResponseEntity<ApiResult<UserSignUpResponse>> signUpCertificate(@RequestBody UserSignUpRequest request) {
-		UserSignUpDto userSignUpDto = modelMapper.map(request, UserSignUpDto.class);
-		userSignUpDto.setCreateUserCompanyCertificateDto(modelMapper.map(request.getVerifyCompanyCertificateRequest(), CreateUserCompanyCertificateDto.class));
-
-		UserSignUpResultDto userSignUpResultDto = authService.signUpCertificate(userSignUpDto);
 		return ResponseEntity.ok(ApiResult.ofSuccess(modelMapper.map(userSignUpResultDto, UserSignUpResponse.class)));
 	}
 
