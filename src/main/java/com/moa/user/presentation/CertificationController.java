@@ -54,7 +54,7 @@ public class CertificationController {
 		@ApiResponse(responseCode = "200", description = "OK"),
 		@ApiResponse(responseCode = "400", description = "이메일 인증 실패", content = @Content(schema = @Schema(implementation = ApiResult.class))),
 	})
-	@PatchMapping("/email-confirm")
+	@PostMapping("/email-confirm")
 	public ResponseEntity<ApiResult<CompanyVerifyResponse>> confirmCertificationEmail(@RequestBody SendEmailConfirmRequest request,
 		@RequestHeader(required = false, value = "Authorization") String token) {
 
