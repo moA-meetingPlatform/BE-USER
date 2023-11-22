@@ -38,4 +38,10 @@ public class UserScore {
 		this.userWarningScore = 0;
 	}
 
+
+	public void updateUserTemparatureAndReviewerCount(double userMannersTemparature) {
+		this.reviewerCount++;
+		this.userMannersTemparature += userMannersTemparature;
+	}
+
 }
