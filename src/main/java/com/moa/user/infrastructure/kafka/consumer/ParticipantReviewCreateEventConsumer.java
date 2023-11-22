@@ -45,7 +45,12 @@ public class ParticipantReviewCreateEventConsumer {
 		);
 
 		log.debug("dto : {}", dto);
-		userScoreService.updateUserScore(dto);
+		try {
+			userScoreService.updateUserScore(dto);
+		} catch (Exception e) {
+			log.error("updateUserScore Exception : {}", e.getMessage());
+			throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 }
