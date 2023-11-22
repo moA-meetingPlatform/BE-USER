@@ -56,3 +56,9 @@ JWT:
   header: Authorization
   prefix: Bearer
 
+# prod 환경 swagger 경로 설정
+springdoc:
+  swagger-ui:
+    path: /api/v1/user/swagger-ui.html
+  api-docs:
+    path: /api/v1/user/api-docs

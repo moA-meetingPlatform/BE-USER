@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
@@ -51,6 +52,7 @@ public class SwaggerConfig {
 			.description("moa user service");
 
 		return new OpenAPI()
+			.addServersItem(new Server().url("/"))
 			.info(info)
 			.components(new Components().addSecuritySchemes("Authorization", bearerAuth))
 			.security(List.of(addSecurityItem));
