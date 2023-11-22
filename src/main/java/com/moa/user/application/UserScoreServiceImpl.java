@@ -1,6 +1,7 @@
 package com.moa.user.application;
 
 
+import com.moa.user.domain.User;
 import com.moa.user.domain.UserScore;
 import com.moa.user.dto.kafka.ParticipantReviewCreateEventDto;
 import com.moa.user.infrastructure.UserRepository;
@@ -35,11 +36,15 @@ public class UserScoreServiceImpl implements UserScoreService {
 			case 5 -> 0.01;
 			default -> throw new IllegalStateException("Unexpected value: " + dto.getRating());
 		};
-		Long userId = userRepository.findByUserUuid(dto.getReviewTargetUserUuid())
-			.orElseThrow(() -> new IllegalStateException("존재하지 않는 유저")).getId();
-
-		UserScore userScore = userScoreRepository.findById(userId)
+		User user = userRepository.findByUserUuid(dto.getReviewTargetUserUuid())
 			.orElseThrow(() -> new IllegalStateException("존재하지 않는 유저"));
+
+		UserScore userScore = userScoreRepository.findByUser(user)
+			.orElseGet(() -> {
+				UserScore newUserScore = new UserScore(user);
+				userScoreRepository.save(newUserScore); // 새로운 UserScore 저장
+				return newUserScore;
+			});
 
 		userScore.updateUserTemparatureAndReviewerCount(userMannersTemparature);
 	}
