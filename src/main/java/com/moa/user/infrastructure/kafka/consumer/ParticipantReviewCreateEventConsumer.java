@@ -40,8 +40,8 @@ public class ParticipantReviewCreateEventConsumer {
 		log.debug("여까진 됨");
 
 		ParticipantReviewCreateEventDto dto = new ParticipantReviewCreateEventDto(
-			UUID.fromString((String) map.get("reviewTargetUserUuid")),
-			Integer.parseInt((String) map.get("rating"))
+			UUID.fromString(String.valueOf(map.get("reviewTargetUserUuid"))),
+			(int) map.get("rating")
 		);
 
 		log.debug("dto : {}", dto);
