@@ -84,7 +84,7 @@ public class UserController {
 		@ApiResponse(responseCode = "404", description = "없는 유저", content = @Content(schema = @Schema(implementation = ApiResult.class))),
 		@ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = @Content(schema = @Schema(implementation = ApiResult.class)))
 	})
-	@PatchMapping("/profile")
+	@PostMapping("/profile")
 	public ResponseEntity<ApiResult<Void>> modifyUserProfile(@RequestBody UserModifyRequest request) {
 		userService.modifyUser(modelMapper.map(request, UserModifyDto.class));
 		return ResponseEntity.ok(ApiResult.ofSuccess(null));
